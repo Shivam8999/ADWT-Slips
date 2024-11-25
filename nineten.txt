@@ -1,0 +1,362 @@
+#####################################################################################################################################
+############################################################## Slip 9 ###############################################################
+#####################################################################################################################################
+
+Write an HTML 5 program for student registration form for college admission. Use input type like search, email, date
+etc
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Registration Form</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+body {
+background-color: f4f4f4;
+padding: 20px;
+}
+.form-container {
+background-color: white;
+padding: 20px;
+border-radius: 5px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+</style>
+</head>
+<body>
+<div class="container form-container">
+<h2>Student Registration Form</h2>
+<form>
+<div class="form-group">
+<label for="studentName">Full Name:</label>
+<input type="text" class="form-control" id="studentName" placeholder="Enter your full name" required>
+</div>
+<div class="form-group">
+<label for="email">Email:</label>
+<input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+</div>
+<div class="form-group">
+<label for="dateOfBirth">Date of Birth:</label>
+<input type="date" class="form-control" id="dateOfBirth" required>
+</div>
+<div class="form-group">
+<label for="phone">Phone Number:</label>
+<input type="tel" class="form-control" id="phone" placeholder="Enter your phone number" required>
+</div>
+<div class="form-group">
+<label for="address">Address:</label>
+<textarea class="form-control" id="address" rows="3" placeholder="Enter your address" required></textarea>
+</div>
+<div class="form-group">
+<label for="course">Course of Study:</label>
+<input type="search" class="form-control" id="course" placeholder="Search for your course" required>
+</div>
+<div class="form-group">
+<label for="gender">Gender:</label>
+
+<select class="form-control" id="gender" required>
+<option value="">Select your gender</option>
+<option value="male">Male</option>
+<option value="female">Female</option>
+<option value="other">Other</option>
+</select>
+</div>
+<div class="form-group">
+<label for="terms">
+<input type="checkbox" id="terms" required> I agree to the terms and conditions
+</label>
+</div>
+<button type="submit" class="btn btn-primary">Register</button>
+</form>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+Explanation:
+- Form Structure : The form includes various input fields:
+- Full Name : Text input for the student's name.
+- Email : Email input to validate email format.
+- Date of Birth : Date input for selecting a date.
+- Phone Number : Telephone input for phone numbers.
+- Address : Text area for the address.
+- Course of Study : Search input for finding courses.
+- Gender : Dropdown select for gender options.
+- Terms and Conditions : Checkbox for agreement.
+- Bootstrap : The form uses Bootstrap classes for styling and layout, making it responsive and visually appealing.
+- Validation : Required fields are indicated to ensure that all necessary information is provided before submission.
+
+1. Model the following Customer Loan information as a document database.
+Consider Customer Loan information system where the customer can take
+many types of loans.
+2. Assume appropriate attributes and collections as per the query
+requirements [3]
+3. Insert at least 10 documents in each collection. [3]
+4. Answer the following Queries.
+a. List all customers whose name starts with 'D' character [3]
+b. List the names of customer in descending order who has taken a loan from Pimpri city. [3]
+c. Display customer details having maximum loan amount. [4]
+d. Update the address of customer whose name is “Mr. Patil” and loan_amt is greater than 100000. [4]
+
+To model a Customer Loan information system as a document database, we can use a structure that consists of
+collections representing customers and loans. Here’s a breakdown of the schema and sample documents.
+Collections
+1. Customers
+- Attributes:
+- `customer_id`: Unique identifier for the customer
+- `name`: Name of the customer
+- `address`: Address of the customer
+- `phone`: Phone number of the customer
+- `email`: Email of the customer
+2. Loans
+- Attributes:
+- `loan_id`: Unique identifier for the loan
+- `customer_id`: Reference to the customer who took the loan
+- `loan_type`: Type of loan (e.g., personal, home, auto)
+- `loan_amt`: Amount of the loan
+- `city`: City where the loan was taken
+- `date_taken`: Date when the loan was taken
+Sample Documents
+Customers Collection
+```json
+[
+{"customer_id": 1, "name": "David Smith", "address": "123 Elm St", "phone": "123-456-7890", "email":
+"david@example.com"},
+{"customer_id": 2, "name": "Diana Prince", "address": "456 Maple St", "phone": "234-567-8901", "email":
+"diana@example.com"},
+{"customer_id": 3, "name": "John Doe", "address": "789 Oak St", "phone": "345-678-9012", "email":
+"john@example.com"},
+{"customer_id": 4, "name": "Mr. Patil", "address": "101 Pine St", "phone": "456-789-0123", "email":
+"patil@example.com"},
+{"customer_id": 5, "name": "Alice Brown", "address": "202 Birch St", "phone": "567-890-1234", "email":
+"alice@example.com"},
+{"customer_id": 6, "name": "Daniel Craig", "address": "303 Cedar St", "phone": "678-901-2345", "email":
+"daniel@example.com"},
+{"customer_id": 7, "name": "Dorothy Gale", "address": "404 Fir St", "phone": "789-012-3456", "email":
+"dorothy@example.com"},
+{"customer_id": 8, "name": "Steve Rogers", "address": "505 Spruce St", "phone": "890-123-4567", "email":
+"steve@example.com"},
+{"customer_id": 9, "name": "Bruce Wayne", "address": "606 Willow St", "phone": "901-234-5678", "email":
+"bruce@example.com"},
+{"customer_id": 10, "name": "Clark Kent", "address": "707 Cherry St", "phone": "012-345-6789", "email":
+"clark@example.com"}
+]
+```
+Loans Collection
+```json
+
+[
+{"loan_id": 1, "customer_id": 1, "loan_type": "Personal", "loan_amt": 50000, "city": "Pimpri", "date_taken": "2024-
+01-15"},
+{"loan_id": 2, "customer_id": 2, "loan_type": "Home", "loan_amt": 200000, "city": "Pimpri", "date_taken": "2023-11-
+20"},
+{"loan_id": 3, "customer_id": 3, "loan_type": "Auto", "loan_amt": 15000, "city": "Mumbai", "date_taken": "2023-12-
+01"},
+{"loan_id": 4, "customer_id": 4, "loan_type": "Personal", "loan_amt": 120000, "city": "Pimpri", "date_taken": "2024-
+02-10"},
+{"loan_id": 5, "customer_id": 5, "loan_type": "Home", "loan_amt": 300000, "city": "Navi Mumbai", "date_taken":
+"2024-03-05"},
+{"loan_id": 6, "customer_id": 6, "loan_type": "Personal", "loan_amt": 75000, "city": "Pimpri", "date_taken": "2024-
+04-22"},
+{"loan_id": 7, "customer_id": 7, "loan_type": "Auto", "loan_amt": 22000, "city": "Thane", "date_taken": "2024-05-
+30"},
+{"loan_id": 8, "customer_id": 8, "loan_type": "Home", "loan_amt": 500000, "city": "Pimpri", "date_taken": "2024-06-
+15"},
+{"loan_id": 9, "customer_id": 9, "loan_type": "Personal", "loan_amt": 60000, "city": "Pimpri", "date_taken": "2024-
+07-19"},
+{"loan_id": 10, "customer_id": 10, "loan_type": "Home", "loan_amt": 250000, "city": "Mumbai", "date_taken":
+"2024-08-25"}
+]
+```
+Queries
+a. List all customers whose name starts with 'D'
+```json
+db.customers.find({ "name": /^D/ })
+```
+b. List the names of customers in descending order who have taken a loan from Pimpri city
+```json
+db.customers.aggregate([
+{ $lookup: {
+from: "loans",
+localField: "customer_id",
+foreignField: "customer_id",
+as: "customer_loans"
+}},
+{ $match: { "customer_loans.city": "Pimpri" }},
+{ $project: { name: 1 }},
+{ $sort: { name: -1 }}
+])
+```
+c. Display customer details having the maximum loan amount
+```json
+const maxLoan = db.loans.find().sort({ loan_amt: -1 }).limit(1).toArray()[0];
+db.customers.find({ customer_id: maxLoan.customer_id });
+```
+
+d. Update the address of customer whose name is “Mr. Patil” and loan_amt is greater than 100000
+```json
+db.customers.updateOne(
+{ "name": "Mr. Patil" },
+{ $set: { "address": "New Address St" }},
+{ $merge: true }
+);
+```
+######################################################################################################################################
+############################################################## Slip 10 ###############################################################
+######################################################################################################################################
+
+Create a web page that shows use of transition properties, transition delay and duration effect.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS Transition Effects</title>
+<style>
+body {
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+background-color: f4f4f4;
+font-family: Arial, sans-serif;
+}
+.box {
+width: 100px;
+height: 100px;
+background-color: 007bff;
+margin: 20px;
+transition: all 0.5s ease;
+cursor: pointer;
+}
+.box:hover {
+background-color: 28a745;
+transform: scale(1.2);
+}
+.box.transition-delay {
+transition-delay: 0.3s; / Delay effect /
+}
+.box.transition-duration {
+transition-duration: 1s; / Duration effect /
+}
+.box.transition-both {
+transition: all 0.5s ease 0.3s; / Both duration and delay /
+}
+</style>
+</head>
+<body>
+<div class="box transition-both">Hover Me!</div>
+<div class="box transition-delay">Hover Me!</div>
+<div class="box transition-duration">Hover Me!</div>
+<script>
+// Optional: Add some interactivity with JavaScript if needed
+
+</script>
+</body>
+</html>
+```
+Explanation:
+- HTML Structure : The page contains three boxes, each demonstrating different transition effects.
+- CSS Styles :
+- Box Style : Each box has a width, height, background color, and margin. The `transition` property applies to all
+properties and has a duration of 0.5 seconds with an easing function.
+- Hover Effect : On hover, the background color changes and the box scales up.
+- Transition Delay : The box with the class `transition-delay` has a delay before the transition starts (0.3 seconds).
+- Transition Duration : The box with the class `transition-duration` has an extended duration for transitions (1
+second).
+- Both Effects : The box with the class `transition-both` combines both duration and delay in a single transition
+property.
+1. Model the following Online shopping information as a document database. Consider online shopping where the
+customer can get different products from different brands. Customers can rate the brands and products
+2. Assume appropriate attributes and collections as per the query requirements [3]
+3. Insert at least 5 documents in each collection. [3]
+4. Answer the following Queries.
+a. List the names of product whose warranty period is one year [3 ]
+b. List the customers has done purchase on “15/08/2023”. [3 ]
+c. Display the name s of products with brand which have highest rating.[4]
+d. Display customers who stay in ...... city and billamt >50000 . [4]
+To model an online shopping information system as a document database, we can create collections for customers,
+products, and brands. This structure allows us to manage relationships between customers, products, and brands
+effectively.
+Collections
+1. Customers
+- Attributes:
+- `customer_id`: Unique identifier for the customer
+- `name`: Name of the customer
+- `address`: Address of the customer
+- `city`: City where the customer lives
+- `email`: Email of the customer
+- `purchases`: List of purchase records (each containing product_id, purchase_date, and bill_amt)
+2. Products
+- Attributes:
+- `product_id`: Unique identifier for the product
+- `name`: Name of the product
+- `brand_id`: Reference to the brand of the product
+- `warranty_period`: Warranty period of the product (in years)
+- `rating`: Average rating of the product
+3. Brands
+- Attributes:
+- `brand_id`: Unique identifier for the brand
+- `name`: Name of the brand
+- `rating`: Average rating of the brand
+
+Sample Documents
+Customers Collection
+```json
+[
+{"customer_id": 1, "name": "Alice Johnson", "address": "123 Main St", "city": "New York", "email":
+"alice@example.com", "purchases": [{"product_id": 1, "purchase_date": "2023-08-15", "bill_amt": 60000}]},
+{"customer_id": 2, "name": "Bob Smith", "address": "456 Park Ave", "city": "Los Angeles", "email":
+"bob@example.com", "purchases": [{"product_id": 2, "purchase_date": "2023-07-20", "bill_amt": 30000}]},
+{"customer_id": 3, "name": "Charlie Brown", "address": "789 Pine St", "city": "Chicago", "email":
+"charlie@example.com", "purchases": []},
+{"customer_id": 4, "name": "Diana Prince", "address": "101 Maple St", "city": "New York", "email":
+"diana@example.com", "purchases": [{"product_id": 3, "purchase_date": "2023-08-15", "bill_amt": 55000}]},
+{"customer_id": 5, "name": "Eve Adams", "address": "202 Oak St", "city": "Miami", "email": "eve@example.com",
+"purchases": [{"product_id": 4, "purchase_date": "2023-09-01", "bill_amt": 45000}]}
+]
+```
+Products Collection
+```json
+[
+{"product_id": 1, "name": "Smartphone A", "brand_id": 1, "warranty_period": 1, "rating": 4.5},
+{"product_id": 2, "name": "Laptop B", "brand_id": 2, "warranty_period": 2, "rating": 4.7},
+{"product_id": 3, "name": "Tablet C", "brand_id": 1, "warranty_period": 1, "rating": 4.3},
+{"product_id": 4, "name": "Headphones D", "brand_id": 3, "warranty_period": 1, "rating": 4.8},
+{"product_id": 5, "name": "Smartwatch E", "brand_id": 2, "warranty_period": 1, "rating": 4.2}
+]
+```
+Brands Collection
+```json
+[
+{"brand_id": 1, "name": "BrandX", "rating": 4.5},
+{"brand_id": 2, "name": "BrandY", "rating": 4.7},
+{"brand_id": 3, "name": "BrandZ", "rating": 4.8}
+]
+```
+Queries
+a. List the names of products whose warranty period is one year
+```json
+db.products.find({ "warranty_period": 1 }, { "name": 1 })
+```
+b. List the customers who made a purchase on “15/08/2023”
+```json
+db.customers.find({ "purchases.purchase_date": "2023-08-15" }, { "name": 1 })
+```
+c. Display the names of products with the brand that has the highest rating
+
+```json
+const highestRatedBrand = db.brands.find().sort({ rating: -1 }).limit(1).toArray()[0];
+db.products.find({ brand_id: highestRatedBrand.brand_id }, { name: 1 })
+```
+d. Display customers who stay in a specific city (e.g., "New York") and have a bill amount greater than 50000
+```json
+db.customers.find({
+"city": "New York",
+"purchases.bill_amt": { $gt: 50000 }
+}, { "name": 1 })
+```

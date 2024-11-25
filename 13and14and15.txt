@@ -1,0 +1,483 @@
+######################################################################################################################################
+############################################################## Slip 13 ###############################################################
+######################################################################################################################################
+
+Create a useful web with the following information and structure using
+HTML5 tags like:<header> , <footer>, <nav>, <aside>, <section>
+Certainly! Below is an example of a simple web page structured with HTML5 semantic elements such as `<header>`,
+`<footer>`, `<nav>`, `<aside>`, and `<section>`. This web page provides general information about a fictional
+company, including navigation links, a main content area, and an aside for additional information.
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sample Company Web Page</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+body {
+background-color: f4f4f4;
+}
+.content {
+padding: 20px;
+background-color: white;
+border-radius: 5px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+</style>
+</head>
+<body>
+<header class="bg-primary text-white text-center p-4">
+<h1>Welcome to Our Company</h1>
+<p>Your trusted partner in excellence</p>
+</header>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<a class="navbar-brand" href=" ">Company Logo</a>
+
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=" navbarNav" aria-
+controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+<ul class="navbar-nav">
+<li class="nav-item active">
+<a class="nav-link" href=" about">About Us</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href=" services">Services</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href=" contact">Contact</a>
+</li>
+</ul>
+
+</div>
+</nav>
+<div class="container mt-4">
+<section id="about" class="content">
+<h2>About Us</h2>
+<p>We are a leading company in our industry, dedicated to providing top-notch services to our clients. Our team
+is comprised of experienced professionals who are passionate about delivering results.</p>
+</section>
+<section id="services" class="content mt-4">
+<h2>Our Services</h2>
+<ul>
+<li>Consulting</li>
+<li>Project Management</li>
+<li>Technical Support</li>
+<li>Product Development</li>
+</ul>
+</section>
+<aside class="content mt-4">
+<h2>Additional Information</h2>
+<p>Follow us on social media for updates:</p>
+<ul>
+<li><a href=" ">Facebook</a></li>
+<li><a href=" ">Twitter</a></li>
+<li><a href=" ">LinkedIn</a></li>
+</ul>
+</aside>
+</div>
+<footer class="bg-dark text-white text-center p-4 mt-4">
+<p>&copy; 2024 Our Company. All rights reserved.</p>
+<p><a href=" " class="text-white">Privacy Policy</a> | <a href=" " class="text-white">Terms of Service</a></p>
+</footer>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+```
+Explanation of Structure:
+- Header : Contains the company name and a brief tagline, styled with a background color and centered text.
+- Navigation : A responsive navigation bar with links to different sections of the page (About Us, Services,
+Contact).
+- Main Content Area :
+- Sections :
+- The first section (`About Us`) describes the company.
+- The second section (`Our Services`) lists the services offered.
+- Aside : Provides additional information, such as social media links.
+- Footer : Contains copyright information and links to the privacy policy and terms of service.
+
+Styles:
+- The page uses Bootstrap for responsive design and basic styling, ensuring it looks good on various devices.
+- Custom styles are added to enhance the appearance of the content sections.
+
+1. Model the following Student Competition information as a document database. Consider Student competition
+information where the student can participate in many competitions.
+2. Assume appropriate attributes and collections as per the query requirements [3]
+3. Insert at least 10 documents in each collection. [3]
+4. Answer the following Queries.
+a. Display average no. of students participating in each competition.[3]
+b. Find the number of student for programming competition. [3]
+c. Display the names of first three winners of each competition. [4]
+d. Display students from class 'FY’ and participated in 'E-Rangoli ' Competition. [4]
+To model a Student Competition information system as a document database, we can create collections for students,
+competitions, and participations. This structure captures the relationships among these entities and allows for efficient
+querying.
+Collections
+1. Students
+- Attributes:
+- `student_id`: Unique identifier for the student
+- `name`: Name of the student
+- `class`: Class of the student (e.g., FY, SY)
+- `email`: Email of the student
+2. Competitions
+- Attributes:
+- `competition_id`: Unique identifier for the competition
+- `name`: Name of the competition
+- `date`: Date of the competition
+- `category`: Category of the competition (e.g., Programming, Art)
+- `participants`: List of student IDs who participated
+3. Participations (optional but useful for tracking individual results)
+- Attributes:
+- `participation_id`: Unique identifier for the participation record
+- `competition_id`: Reference to the competition
+- `student_id`: Reference to the student
+- `position`: Position in the competition (e.g., 1st, 2nd, 3rd)
+Sample Documents
+Students Collection
+```json
+[
+{"student_id": 1, "name": "Alice Johnson", "class": "FY", "email": "alice@example.com"},
+{"student_id": 2, "name": "Bob Smith", "class": "SY", "email": "bob@example.com"},
+{"student_id": 3, "name": "Charlie Brown", "class": "FY", "email": "charlie@example.com"},
+{"student_id": 4, "name": "Diana Prince", "class": "TY", "email": "diana@example.com"},
+
+{"student_id": 5, "name": "Eve Adams", "class": "FY", "email": "eve@example.com"},
+{"student_id": 6, "name": "Frank Castle", "class": "SY", "email": "frank@example.com"},
+{"student_id": 7, "name": "Grace Hopper", "class": "FY", "email": "grace@example.com"},
+{"student_id": 8, "name": "Harry Potter", "class": "TY", "email": "harry@example.com"},
+{"student_id": 9, "name": "Irene Adler", "class": "FY", "email": "irene@example.com"},
+{"student_id": 10, "name": "Jack Sparrow", "class": "SY", "email": "jack@example.com"}
+]
+```
+Competitions Collection
+```json
+[
+{"competition_id": 1, "name": "E-Rangoli", "date": "2023-08-15", "category": "Art", "participants": [1, 3, 5, 7, 9]},
+{"competition_id": 2, "name": "Programming Contest", "date": "2023-09-01", "category": "Programming",
+"participants": [2, 4, 6, 8]},
+{"competition_id": 3, "name": "Science Quiz", "date": "2023-09-15", "category": "Quiz", "participants": [1, 2, 5]},
+{"competition_id": 4, "name": "Math Olympiad", "date": "2023-10-01", "category": "Math", "participants": [3, 4, 7,
+9]},
+{"competition_id": 5, "name": "Art Competition", "date": "2023-10-10", "category": "Art", "participants": [1, 5, 6]},
+{"competition_id": 6, "name": "Debate Competition", "date": "2023-10-20", "category": "Debate", "participants": [2,
+3, 8]},
+{"competition_id": 7, "name": "Spelling Bee", "date": "2023-11-01", "category": "Quiz", "participants": [1, 2, 4]},
+{"competition_id": 8, "name": "Robotics Challenge", "date": "2023-11-10", "category": "Tech", "participants": [5, 6,
+9]},
+{"competition_id": 9, "name": "Coding Challenge", "date": "2023-11-15", "category": "Programming", "participants":
+[1, 2, 8]},
+{"competition_id": 10, "name": "Cultural Fest", "date": "2023-12-01", "category": "Cultural", "participants": [3, 7,
+10]}
+]
+Participations Collection
+```json
+[
+{"participation_id": 1, "competition_id": 1, "student_id": 1, "position": "1st"},
+{"participation_id": 2, "competition_id": 1, "student_id": 3, "position": "2nd"},
+{"participation_id": 3, "competition_id": 1, "student_id": 5, "position": "3rd"},
+{"participation_id": 4, "competition_id": 2, "student_id": 2, "position": "1st"},
+{"participation_id": 5, "competition_id": 2, "student_id": 6, "position": "2nd"},
+{"participation_id": 6, "competition_id": 2, "student_id": 8, "position": "3rd"},
+{"participation_id": 7, "competition_id": 3, "student_id": 1, "position": "1st"},
+{"participation_id": 8, "competition_id": 3, "student_id": 5, "position": "2nd"},
+{"participation_id": 9, "competition_id": 4, "student_id": 3, "position": "1st"},
+{"participation_id": 10, "competition_id": 4, "student_id": 9, "position": "2nd"}
+]
+```
+Queries
+a. Display average number of students participating in each competition
+```json
+db.competitions.aggregate([
+{ $project: { name: "$name", average_participants: { $avg: { $size: "$participants" } } } }
+
+])
+```
+b. Find the number of students for the Programming Contest
+```json
+db.competitions.find({ name: "Programming Contest" }, { "participants": { $size: 1 } })
+```
+c. Display the names of the first three winners of each competition
+```json
+db.participations.aggregate([
+{ $group: {
+_id: "$competition_id",
+winners: { $push: { student_id: "$student_id", position: "$position" } }
+}},
+{ $project: {
+_id: 1,
+winners: { $slice: ["$winners", 3] }
+}},
+{ $lookup: {
+from: "students",
+localField: "winners.student_id",
+foreignField: "student_id",
+as: "winner_details"
+}},
+{ $unwind: "$winner_details" },
+{ $project: {
+competition_id: "$_id",
+winner_name: "$winner_details.name",
+position: "$winners.position"
+}}
+])
+```
+d. Display students from class 'FY' who participated in 'E-Rangoli' Competition
+```json
+const eRangoliId = db.competitions.findOne({ name: "E-Rangoli" }).competition_id;
+db.students.find({ class: "FY", student_id: { $in: db.competitions.findOne({ competition_id: eRangoliId }).participants
+} })
+```
+
+######################################################################################################################################
+############################################################## Slip 14 ###############################################################
+######################################################################################################################################
+
+Design an HTML form to take the information of a customer for booking a travel plan consisting of fields such as
+name, address, contact no., gender, preferred season(Checkboxes), location type(to be selected from a list) etc.
+You should provide button to submit as well as reset the form contents
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travel Booking Form</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+body {
+background-color: f4f4f4;
+padding: 20px;
+}
+.form-container {
+background-color: white;
+padding: 20px;
+border-radius: 5px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+</style>
+</head>
+<body>
+<div class="container form-container">
+<h2>Travel Booking Form</h2>
+<form>
+<div class="form-group">
+<label for="name">Full Name:</label>
+<input type="text" class="form-control" id="name" placeholder="Enter your full name" required>
+</div>
+<div class="form-group">
+<label for="address">Address:</label>
+<textarea class="form-control" id="address" rows="3" placeholder="Enter your address" required></textarea>
+</div>
+<div class="form-group">
+<label for="contact">Contact Number:</label>
+<input type="tel" class="form-control" id="contact" placeholder="Enter your contact number" required>
+</div>
+<div class="form-group">
+<label>Gender:</label><br>
+<div class="form-check">
+<input class="form-check-input" type="radio" name="gender" id="male" value="male" required>
+<label class="form-check-label" for="male">Male</label>
+</div>
+<div class="form-check">
+<input class="form-check-input" type="radio" name="gender" id="female" value="female" required>
+<label class="form-check-label" for="female">Female</label>
+
+</div>
+<div class="form-check">
+<input class="form-check-input" type="radio" name="gender" id="other" value="other" required>
+<label class="form-check-label" for="other">Other</label>
+</div>
+</div>
+<div class="form-group">
+<label>Preferred Season:</label><br>
+<div class="form-check">
+<input class="form-check-input" type="checkbox" id="spring" value="Spring">
+<label class="form-check-label" for="spring">Spring</label>
+</div>
+<div class="form-check">
+<input class="form-check-input" type="checkbox" id="summer" value="Summer">
+<label class="form-check-label" for="summer">Summer</label>
+</div>
+<div class="form-check">
+<input class="form-check-input" type="checkbox" id="autumn" value="Autumn">
+<label class="form-check-label" for="autumn">Autumn</label>
+</div>
+<div class="form-check">
+<input class="form-check-input" type="checkbox" id="winter" value="Winter">
+<label class="form-check-label" for="winter">Winter</label>
+</div>
+</div>
+<div class="form-group">
+<label for="locationType">Location Type:</label>
+<select class="form-control" id="locationType" required>
+<option value="">Select a location type</option>
+<option value="beach">Beach</option>
+<option value="mountain">Mountain</option>
+<option value="city">City</option>
+<option value="countryside">Countryside</option>
+<option value="desert">Desert</option>
+</select>
+</div>
+<button type="submit" class="btn btn-primary">Submit</button>
+<button type="reset" class="btn btn-secondary">Reset</button>
+</form>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+```
+Explanation:
+- Form Structure :
+
+- Full Name : A text input field for the customer's name.
+- Address : A textarea for the customer to enter their address.
+- Contact Number : A telephone input for the customer's contact number.
+- Gender : Radio buttons for selecting the customer's gender.
+- Preferred Season : Checkboxes for selecting preferred travel seasons.
+- Location Type : A dropdown menu to select the type of location.
+- Buttons : There are two buttons:
+- Submit : To submit the form data.
+- Reset : To clear all fields in the form.
+- Bootstrap : The form uses Bootstrap for responsive design and styling, ensuring a clean and modern appearance.
+
+Model the following system as a graph model, and answer the queries using Cypher. Government provides various
+scholarships for students. A students apply for scholarship. Student can get benefits of more than one scholarship if
+satisfies the criteria. Student can recommend it for his friends or other family members
+1. Identify the labels and relationships, along with their properties, and draw a high-level Graph model.
+[3]
+2. Create nodes and relationships, along with their properties, and visualize your actual Graph model.
+[3]
+3. Answer the following Queries in Cypher:
+a. List the names of scholarship for OBC category. [3]
+b. Count no. of students who are benefitted by ____ scholarship in year 2020-2021
+
+[3]
+
+c. Update the income limit for _____scholarship. [4]
+d. List the most popular scholarship. [4]
+To model the scholarship system as a graph, let's define the structure:
+1. Graph Model
+Labels:
+- Student
+- Properties: `name`, `category`, `income`
+- Scholarship
+- Properties: `name`, `category`, `income_limit`, `year`
+- Recommendation
+- Properties: `date`, `status`
+Relationships:
+- `APPLIED_FOR` (between `Student` and `Scholarship`)
+- `BENEFITED_FROM` (between `Student` and `Scholarship`)
+- `RECOMMENDED` (between `Student` and `Student`)
+High-Level Graph Model
+(Student)-[:APPLIED_FOR]->(Scholarship)
+(Student)-[:BENEFITED_FROM]->(Scholarship)
+(Student)-[:RECOMMENDED]->(Student)
+
+2. Create Nodes and Relationships
+Students
+
+CREATE (s1:Student {name: 'Alice', category: 'OBC', income: 30000}),
+(s2:Student {name: 'Bob', category: 'General', income: 40000}),
+(s3:Student {name: 'Charlie', category: 'OBC', income: 25000}),
+(s4:Student {name: 'David', category: 'SC', income: 20000});
+Scholarships
+CREATE (sch1:Scholarship {name: 'OBC Scholarship', category: 'OBC', income_limit: 35000, year: '2020-2021'}),
+(sch2:Scholarship {name: 'General Scholarship', category: 'General', income_limit: 50000, year: '2020-2021'}),
+(sch3:Scholarship {name: 'SC Scholarship', category: 'SC', income_limit: 25000, year: '2020-2021'});
+// Create Relationships
+CREATE (s1)-[:APPLIED_FOR]->(sch1),
+(s1)-[:BENEFITED_FROM]->(sch1),
+(s2)-[:APPLIED_FOR]->(sch2),
+(s3)-[:APPLIED_FOR]->(sch1),
+(s3)-[:BENEFITED_FROM]->(sch1),
+(s4)-[:APPLIED_FOR]->(sch3),
+(s4)-[:BENEFITED_FROM]->(sch3),
+(s1)-[:RECOMMENDED]->(s2),
+(s1)-[:RECOMMENDED]->(s3);
+3. Cypher Queries
+a. List the names of scholarships for the OBC category.
+MATCH (s:Scholarship {category: 'OBC'})
+RETURN s.name;
+b. Count the number of students who benefited from a specific scholarship in the year 2020-2021. (Assuming
+we check for 'OBC Scholarship')
+MATCH (s:Scholarship {name: 'OBC Scholarship', year: '2020-2021'})<-[:BENEFITED_FROM]-(student:Student)
+RETURN COUNT(student) AS number_of_students;
+c. Update the income limit for a specific scholarship. (Assuming we update 'OBC Scholarship' to a new limit)
+MATCH (s:Scholarship {name: 'OBC Scholarship'})
+SET s.income_limit = 40000;
+
+d. List the most popular scholarship. (Based on the count of students benefiting)
+MATCH (s:Scholarship)<-[:BENEFITED_FROM]-(student:Student)
+RETURN s.name, COUNT(student) AS number_of_students
+ORDER BY number_of_students DESC
+LIMIT 1;
+
+######################################################################################################################################
+############################################################## Slip 15 ###############################################################
+######################################################################################################################################
+
+Model the following movie system as a Graph database.
+Consider a information about of movie and actors. One movie can have more than one actor
+1. Identify the labels and relationships, along with their properties, and draw a high-level Graph model. [3]
+2. Create nodes and relationships, along with their properties, and visualize your actual Graph model. [3]
+3. Answer the Queries:
+a. Find movie which made highest business. [3]
+b. Display details of movie along with actors. [3]
+c. List all the movie of “Shahrukh Khan”. [4]
+d. Display all movie having more than 2 awards received [4]
+To model a movie system as a graph database, let’s break down the requirements step by step.
+NODE:
+Movie
+Properties: `title`, `releaseYear`, `boxOffice`, `awards`
+Actor
+Properties: `name`, `dob`, `gender`, `nationality`
+Relationships:
+ACTED_IN: Connects `Actor` to `Movie`
+Properties: `role`
+(Actor) -[:ACTED_IN {role: "lead"}]-> (Movie)
+Creating Nodes and Relationships:
+Create Movies
+CREATE
+(m1:Movie {title: "Dilwale Dulhania Le Jayenge", releaseYear: 1995, boxOffice: 1000, awards: 10}),
+(m2:Movie {title: "Chennai Express", releaseYear: 2013, boxOffice: 3000, awards: 5}),
+(m3:Movie {title: "My Name is Khan", releaseYear: 2010, boxOffice: 2000, awards: 15}),
+(m4:Movie {title: "Raees", releaseYear: 2017, boxOffice: 1500, awards: 2});
+Create Actors
+CREATE
+(a1:Actor {name: "Shahrukh Khan", dob: "1965-11-02", gender: "Male", nationality: "Indian"}),
+(a2:Actor {name: "Kajol", dob: "1974-08-05", gender: "Female", nationality: "Indian"}),
+(a3:Actor {name: "Deepika Padukone", dob: "1986-01-05", gender: "Female", nationality: "Indian"}),
+(a4:Actor {name: "Mahira Khan", dob: "1984-12-21", gender: "Female", nationality: "Pakistani"});
+Create Relationships
+CREATE
+(a1)-[:ACTED_IN {role: "lead"}]->(m1),
+(a1)-[:ACTED_IN {role: "lead"}]->(m2),
+(a1)-[:ACTED_IN {role: "lead"}]->(m3),
+(a1)-[:ACTED_IN {role: "lead"}]->(m4),
+(a2)-[:ACTED_IN {role: "lead"}]->(m1),
+(a3)-[:ACTED_IN {role: "lead"}]->(m2),
+(a4)-[:ACTED_IN {role: "lead"}]->(m3);
+Queries
+a. Find movie which made highest business.
+MATCH (m:Movie)
+
+RETURN m.title AS MovieTitle, m.boxOffice AS BoxOffice
+ORDER BY m.boxOffice DESC
+LIMIT 1;
+b. Display details of movie along with actors.
+MATCH (m:Movie)<-[:ACTED_IN]-(a:Actor)
+RETURN m.title AS MovieTitle, m.releaseYear AS ReleaseYear, m.boxOffice AS BoxOffice,
+m.awards AS Awards, collect(a.name) AS Actors;
+c. List all the movies of “Shahrukh Khan”.
+MATCH (a:Actor {name: "Shahrukh Khan"})-[:ACTED_IN]->(m:Movie)
+RETURN m.title AS MovieTitle, m.releaseYear AS ReleaseYear, m.boxOffice AS BoxOffice;
+d. Display all movies having more than 2 awards received.
+MATCH (m:Movie)
+WHERE m.awards > 2
+RETURN m.title AS MovieTitle, m.awards

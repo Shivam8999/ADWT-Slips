@@ -1,0 +1,419 @@
+######################################################################################################################################
+############################################################## Slip 11 ###############################################################
+######################################################################################################################################
+
+Write a HTML code which will divide web page in three frames. First frame should consists of company name as
+heading. Second frame should consists of name of departments with hyperlink.
+Once click on any department, it should display information of that department in third frame.
+To create a web page with three frames (or sections) that displays a company name, a list of departments with
+hyperlinks, and information for each department, you can use a combination of HTML and CSS. Below is a simple
+example using `<iframe>` elements.
+Note: Since the use of `<frameset>` is deprecated in HTML5, this example will use CSS Flexbox to create a layout that
+mimics the behavior of frames.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Company Departments</title>
+<style>
+body {
+display: flex;
+height: 100vh;
+margin: 0;
+font-family: Arial, sans-serif;
+}
+.header {
+flex: 1;
+background-color: 007bff;
+color: white;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 24px;
+}
+.sidebar {
+flex: 1;
+background-color: f4f4f4;
+padding: 20px;
+}
+.content {
+flex: 2;
+background-color: ffffff;
+padding: 20px;
+border-left: 1px solid ddd;
+}
+.department-link {
+display: block;
+margin: 10px 0;
+color: 007bff;
+text-decoration: none;
+}
+.department-link:hover {
+
+text-decoration: underline;
+}
+</style>
+</head>
+<body>
+<div class="header">
+<h1>Company Name</h1>
+</div>
+<div class="sidebar">
+<h2>Departments</h2>
+<a href=" " class="department-link" onclick="showInfo('HR')">Human Resources</a>
+<a href=" " class="department-link" onclick="showInfo('IT')">Information Technology</a>
+<a href=" " class="department-link" onclick="showInfo('Sales')">Sales</a>
+<a href=" " class="department-link" onclick="showInfo('Marketing')">Marketing</a>
+</div>
+<div class="content" id="department-info">
+<h2>Select a department to see information</h2>
+</div>
+<script>
+function showInfo(department) {
+const info = {
+HR: "The Human Resources department manages employee relations, benefits, and recruitment.",
+IT: "The Information Technology department oversees the technology infrastructure and support.",
+Sales: "The Sales department is responsible for selling products and maintaining customer relationships.",
+Marketing: "The Marketing department focuses on promoting the company and its products."
+};
+document.getElementById('department-info').innerHTML = `<h2>${department}
+Department</h2><p>${info[department]}</p>`;
+}
+</script>
+</body>
+</html>
+Explanation:
+- Structure :
+- The page is divided into three main sections: a header, a sidebar for department links, and a content area for
+displaying department information.
+- Header : Displays the company name.
+- Sidebar : Contains department names as clickable links. Each link calls the `showInfo` function when clicked.
+- Content Area : Displays information about the selected department.
+- JavaScript : The `showInfo` function updates the content area with information about the selected department based
+on a predefined object containing descriptions.
+
+1. Model the following sales system as a document database. Consider a set of products, customers, orders and
+invoices. An invoice is generated when an order is processed.
+2. Assume appropriate attributes and collections as per the query requirements.[3]
+3. Insert at least 5 documents in each collection. [3]
+
+4. Answer the following Queries.
+a. List all products in the inventory. [3]
+b. List the details of orders with a value >20000. [3]
+c. List all the orders which has not been processed (invoice not generated)[4]
+d. List all the orders along with their invoice for “Mr. Rajiv”.[4]
+To model a sales system as a document database, we can create collections for products, customers, orders, and
+invoices. This structure captures the relationships among these entities and allows for efficient querying.
+Collections
+1. Products
+- Attributes:
+- `product_id`: Unique identifier for the product
+- `name`: Name of the product
+- `price`: Price of the product
+- `stock`: Available stock quantity
+- `category`: Category of the product
+2. Customers
+- Attributes:
+- `customer_id`: Unique identifier for the customer
+- `name`: Name of the customer
+- `email`: Email of the customer
+- `address`: Address of the customer
+- `phone`: Phone number of the customer
+3. Orders
+- Attributes:
+- `order_id`: Unique identifier for the order
+- `customer_id`: Reference to the customer who placed the order
+- `order_date`: Date when the order was placed
+- `total_value`: Total value of the order
+- `status`: Status of the order (e.g., "Processed", "Pending")
+4. Invoices
+- Attributes:
+- `invoice_id`: Unique identifier for the invoice
+- `order_id`: Reference to the associated order
+- `invoice_date`: Date when the invoice was generated
+- `amount`: Amount to be paid (matches the order total)
+Sample Documents
+Products Collection
+```json
+[
+{"product_id": 1, "name": "Laptop A", "price": 80000, "stock": 15, "category": "Electronics"},
+{"product_id": 2, "name": "Smartphone B", "price": 50000, "stock": 30, "category": "Electronics"},
+{"product_id": 3, "name": "Washing Machine C", "price": 30000, "stock": 10, "category": "Home Appliances"},
+{"product_id": 4, "name": "Headphones D", "price": 2000, "stock": 50, "category": "Electronics"},
+{"product_id": 5, "name": "Refrigerator E", "price": 60000, "stock": 5, "category": "Home Appliances"}
+]
+
+```
+Customers Collection
+```json
+[
+{"customer_id": 1, "name": "Mr. Rajiv", "email": "rajiv@example.com", "address": "123 Main St", "phone":
+"9876543210"},
+{"customer_id": 2, "name": "Alice Johnson", "email": "alice@example.com", "address": "456 Park Ave", "phone":
+"1234567890"},
+{"customer_id": 3, "name": "Bob Smith", "email": "bob@example.com", "address": "789 Pine St", "phone":
+"2345678901"},
+{"customer_id": 4, "name": "Diana Prince", "email": "diana@example.com", "address": "101 Maple St", "phone":
+"3456789012"},
+{"customer_id": 5, "name": "Charlie Brown", "email": "charlie@example.com", "address": "202 Oak St", "phone":
+"4567890123"}
+]
+```
+Orders Collection
+```json
+[
+{"order_id": 1, "customer_id": 1, "order_date": "2023-08-15", "total_value": 82000, "status": "Processed"},
+{"order_id": 2, "customer_id": 2, "order_date": "2023-09-01", "total_value": 25000, "status": "Pending"},
+{"order_id": 3, "customer_id": 1, "order_date": "2023-09-05", "total_value": 12000, "status": "Pending"},
+{"order_id": 4, "customer_id": 3, "order_date": "2023-09-10", "total_value": 22000, "status": "Processed"},
+{"order_id": 5, "customer_id": 4, "order_date": "2023-09-15", "total_value": 45000, "status": "Pending"}
+]
+```
+Invoices Collection
+```json
+[
+{"invoice_id": 1, "order_id": 1, "invoice_date": "2023-08-16", "amount": 82000},
+{"invoice_id": 2, "order_id": 4, "invoice_date": "2023-09-11", "amount": 22000}
+]
+```
+Queries
+a. List all products in the inventory
+```json
+db.products.find({}, { "name": 1, "price": 1, "stock": 1 })
+```
+b. List the details of orders with a value > 20000
+```json
+db.orders.find({ "total_value": { $gt: 20000 } })
+```
+
+c. List all the orders which have not been processed (invoice not generated)
+```json
+db.orders.find({ "status": "Pending" })
+```
+d. List all the orders along with their invoice for “Mr. Rajiv”
+```json
+db.orders.aggregate([
+{ $match: { "customer_id": 1 } }, // Assuming Mr. Rajiv has customer_id 1
+{ $lookup: {
+from: "invoices",
+localField: "order_id",
+foreignField: "order_id",
+as: "invoice_details"
+}}
+])
+```
+
+######################################################################################################################################
+############################################################## Slip 12 ###############################################################
+######################################################################################################################################
+
+Design an appropriate HTML form for customer registration visiting a departmental store. Form should consist of
+fields such as name, contact no, gender, preferred days of purchasing, favorite item (to be selected from a list of items),
+suggestions etc. You should provide button to submit as well as reset the form contents.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Registration Form</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+body {
+background-color: f4f4f4;
+padding: 20px;
+}
+.form-container {
+background-color: white;
+padding: 20px;
+border-radius: 5px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+</style>
+</head>
+<body>
+<div class="container form-container">
+<h2>Customer Registration Form</h2>
+<form>
+<div class="form-group">
+<label for="name">Full Name:</label>
+<input type="text" class="form-control" id="name" placeholder="Enter your full name" required>
+</div>
+<div class="form-group">
+<label for="contact">Contact Number:</label>
+<input type="tel" class="form-control" id="contact" placeholder="Enter your contact number" required>
+</div>
+<div class="form-group">
+<label>Gender:</label><br>
+<div class="form-check">
+<input class="form-check-input" type="radio" name="gender" id="male" value="male" required>
+<label class="form-check-label" for="male">Male</label>
+</div>
+<div class="form-check">
+<input class="form-check-input" type="radio" name="gender" id="female" value="female" required>
+<label class="form-check-label" for="female">Female</label>
+</div>
+<div class="form-check">
+<input class="form-check-input" type="radio" name="gender" id="other" value="other" required>
+<label class="form-check-label" for="other">Other</label>
+</div>
+
+</div>
+<div class="form-group">
+<label for="preferredDays">Preferred Days of Purchasing:</label><br>
+<select class="form-control" id="preferredDays" multiple required>
+<option value="Monday">Monday</option>
+<option value="Tuesday">Tuesday</option>
+<option value="Wednesday">Wednesday</option>
+<option value="Thursday">Thursday</option>
+<option value="Friday">Friday</option>
+<option value="Saturday">Saturday</option>
+<option value="Sunday">Sunday</option>
+</select>
+<small class="form-text text-muted">Hold Ctrl (Windows) or Command (Mac) to select multiple
+days.</small>
+</div>
+<div class="form-group">
+<label for="favoriteItem">Favorite Item:</label>
+<select class="form-control" id="favoriteItem" required>
+<option value="">Select your favorite item</option>
+<option value="Fruits">Fruits</option>
+<option value="Vegetables">Vegetables</option>
+<option value="Dairy Products">Dairy Products</option>
+<option value="Snacks">Snacks</option>
+<option value="Beverages">Beverages</option>
+<option value="Personal Care">Personal Care</option>
+</select>
+</div>
+<div class="form-group">
+<label for="suggestions">Suggestions:</label>
+<textarea class="form-control" id="suggestions" rows="3" placeholder="Your suggestions"></textarea>
+</div>
+<button type="submit" class="btn btn-primary">Submit</button>
+<button type="reset" class="btn btn-secondary">Reset</button>
+</form>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+```
+Explanation:
+- Form Structure : The form includes the following fields:
+- Full Name : A text input for the customer's name.
+- Contact Number : A telephone input for the customer's contact number.
+- Gender : Radio buttons for selecting gender.
+
+- Preferred Days of Purchasing : A multiple select dropdown allowing users to select their preferred shopping
+days.
+- Favorite Item : A dropdown list to select a favorite item from predefined options.
+- Suggestions : A textarea for additional comments or suggestions.
+- Buttons : There are two buttons: one to submit the form and another to reset all fields.
+- Bootstrap : The form uses Bootstrap for styling, ensuring a responsive and visually appealing design.
+1. Model the following online movie information as a document database. Consider online movie information where
+the each actor has acted in one or more movie. Each producer has produced many movies but each movie can be
+produced by more than one producers. Each movie has one or more actors acting in it, in different roles.
+2. Assume appropriate attributes and collections as per the query requirements[3]
+3. Insert at least 05 documents in each collection. [3]
+4. Answer the following Queries.
+a. List the names of movies with the highest budget. [3] b. Display the details of producer who have produced more
+than
+one movie in a year. [3]
+c. List the names of actors who have acted in at least one movie, in which ‘Akshay’ has acted. [4]
+d. List the names of movies, produced by more than one produce. [4]
+To model an online movie information system as a document database, we can create collections for movies, actors,
+and producers. This structure captures the relationships among these entities and allows for efficient querying.
+Collections
+1. Movies
+- Attributes:
+- `movie_id`: Unique identifier for the movie
+- `title`: Title of the movie
+- `budget`: Budget of the movie
+- `release_year`: Year the movie was released
+- `actors`: List of actor IDs and their roles in the movie
+- `producers`: List of producer IDs
+2. Actors
+- Attributes:
+- `actor_id`: Unique identifier for the actor
+- `name`: Name of the actor
+- `dob`: Date of birth of the actor
+- `movies`: List of movie IDs in which the actor has acted
+3. Producers
+- Attributes:
+- `producer_id`: Unique identifier for the producer
+- `name`: Name of the producer
+- `movies`: List of movie IDs produced by the producer
+Sample Documents
+Movies Collection
+```json
+[
+{"movie_id": 1, "title": "Action Heroes", "budget": 150000000, "release_year": 2022, "actors": [{"actor_id": 1, "role":
+"Lead"}, {"actor_id": 2, "role": "Supporting"}], "producers": [1, 2]},
+{"movie_id": 2, "title": "Mystery Nights", "budget": 80000000, "release_year": 2021, "actors": [{"actor_id": 1, "role":
+"Lead"}, {"actor_id": 3, "role": "Supporting"}], "producers": [2]},
+
+{"movie_id": 3, "title": "Comedy Central", "budget": 60000000, "release_year": 2022, "actors": [{"actor_id": 4,
+"role": "Lead"}, {"actor_id": 5, "role": "Supporting"}], "producers": [1, 3]},
+{"movie_id": 4, "title": "Romantic Days", "budget": 50000000, "release_year": 2023, "actors": [{"actor_id": 2, "role":
+"Lead"}, {"actor_id": 5, "role": "Supporting"}], "producers": [3]},
+{"movie_id": 5, "title": "Thriller Nights", "budget": 120000000, "release_year": 2021, "actors": [{"actor_id": 1,
+"role": "Lead"}, {"actor_id": 3, "role": "Supporting"}], "producers": [2, 3]}
+]
+```
+Actors Collection
+```json
+[
+{"actor_id": 1, "name": "Akshay Kumar", "dob": "1967-09-09", "movies": [1, 2, 5]},
+{"actor_id": 2, "name": "Kareena Kapoor", "dob": "1980-09-21", "movies": [1, 4]},
+{"actor_id": 3, "name": "Ranveer Singh", "dob": "1985-07-06", "movies": [2, 5]},
+{"actor_id": 4, "name": "Alia Bhatt", "dob": "1993-03-15", "movies": [3]},
+{"actor_id": 5, "name": "Varun Dhawan", "dob": "1987-04-24", "movies": [3, 4]}
+]
+```
+Producers Collection
+```json
+[
+{"producer_id": 1, "name": "Rajesh Sharma", "movies": [1, 3]},
+{"producer_id": 2, "name": "Anil Kapoor", "movies": [1, 2, 5]},
+{"producer_id": 3, "name": "Suresh Gupta", "movies": [3, 4, 5]},
+{"producer_id": 4, "name": "Neha Singh", "movies": [2]},
+{"producer_id": 5, "name": "Vikram Mehta", "movies": []}
+]
+```
+Queries
+a. List the names of movies with the highest budget
+```json
+const highestBudget = db.movies.find().sort({ budget: -1 }).limit(1).toArray()[0];
+db.movies.find({ budget: highestBudget.budget }, { title: 1 })
+```
+b. Display the details of producers who have produced more than one movie in a year
+```json
+db.producers.aggregate([
+{ $unwind: "$movies" },
+{ $lookup: {
+from: "movies",
+localField: "movies",
+foreignField: "movie_id",
+as: "movie_details"
+}},
+{ $unwind: "$movie_details" },
+
+{ $group: {
+_id: { producer_id: "$producer_id", year: "$movie_details.release_year" },
+count: { $sum: 1 },
+producer_name: { $first: "$name" }
+}},
+{ $match: { count: { $gt: 1 } } },
+{ $project: { producer_name: 1, year: "$_id.year", count: 1 } }
+])
+```
+c. List the names of actors who have acted in at least one movie in which ‘Akshay’ has acted
+```json
+const akshayMovies = db.actors.findOne({ name: "Akshay Kumar" }).movies;
+db.actors.find({ movies: { $in: akshayMovies } }, { name: 1 })
+```
+d. List the names of movies produced by more than one producer
+```json
+db.movies.find({ "producers": { $size: { $gt: 1 } } }, { title: 1 })
+```

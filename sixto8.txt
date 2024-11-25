@@ -1,0 +1,796 @@
+#####################################################################################################################################
+############################################################## Slip 6 ###############################################################
+#####################################################################################################################################
+
+Create a web page being rendered in the browser consists of many things -
+logo, informative text, pictures, hyperlinks, navigational structure and table.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sample Web Page</title>
+<style>
+body {
+font-family: Arial, sans-serif;
+margin: 20px;
+background-color: f4f4f4;
+}
+header {
+text-align: center;
+margin-bottom: 20px;
+}
+nav {
+background-color: 333;
+color: white;
+padding: 10px;
+}
+nav a {
+color: white;
+margin: 0 15px;
+text-decoration: none;
+}
+nav a:hover {
+
+text-decoration: underline;
+}
+.content {
+display: flex;
+justify-content: space-between;
+margin-bottom: 20px;
+}
+.sidebar {
+width: 30%;
+}
+.main {
+width: 65%;
+}
+table {
+width: 100%;
+border-collapse: collapse;
+margin-top: 20px;
+}
+table, th, td {
+border: 1px solid 333;
+}
+th, td {
+padding: 8px;
+text-align: left;
+}
+th {
+background-color: 4CAF50;
+color: white;
+}
+</style>
+</head>
+<body>
+<header>
+<img src="logo.png" alt="Logo" width="100">
+<h1>Welcome to Our Website</h1>
+</header>
+<nav>
+<a href=" home">Home</a>
+<a href=" about">About Us</a>
+<a href=" services">Services</a>
+<a href=" contact">Contact</a>
+</nav>
+<div class="content">
+<div class="sidebar">
+<h2>Informative Text</h2>
+<p>This website is designed to provide you with the latest information and services we offer. Explore our pages
+to find out more!</p>
+<p><a href="https://example.com" target="_blank">Learn more about us</a></p>
+</div>
+<div class="main">
+
+<h2>Featured Images</h2>
+<img src="image1.jpg" alt="Image 1" width="100%">
+<img src="image2.jpg" alt="Image 2" width="100%" style="margin-top: 10px;">
+<h2>Our Services</h2>
+<table>
+<tr>
+<th>Service</th>
+<th>Description</th>
+<th>Price</th>
+</tr>
+<tr>
+<td>Consulting</td>
+<td>Expert advice for your business.</td>
+<td>$100/hr</td>
+</tr>
+<tr>
+<td>Design</td>
+<td>Creative design solutions.</td>
+<td>$500/project</td>
+</tr>
+<tr>
+<td>Development</td>
+<td>Building web applications.</td>
+<td>$2000/project</td>
+</tr>
+</table>
+</div>
+</div>
+<footer>
+<p>&copy; 2024 Our Website. All rights reserved.</p>
+</footer>
+</body>
+</html>
+ Header: Contains the logo and main title.
+ Navigation: Links to different sections of the website.
+ Content Area: Divided into a sidebar with informative text and main section with images and a table.
+ Table: Displays services with descriptions and prices.
+ Footer: Basic copyright information.
+Make sure to replace logo.png, image1.jpg, and image2.jpg with actual image file paths to display them correctly.
+Enjoy building your webpage!
+1. Model the following information as a document database.
+A customer can take different policies and get the benefit. There are different types of policies provided by various
+companies
+2. Assume appropriate attributes and collections as per the query requirements. [3]
+3. Insert at least 5 documents in each collection. [3]
+4. Answer the following Queries.
+a. List the details of customers who have taken “Komal Jeevan” Policy[3]
+b. Display average premium amount [3]
+c. Increase the premium amount by 5% for policy type=”Monthly”[4]
+
+d. Count no. of customers who have taken policy type “half yearly”. [4]
+
+To model the information where a customer can take different policies provided by various companies as a document
+database, we can design collections that represent customers, policies, and companies. Below is the schema design,
+sample documents, and queries based on the provided requirements.
+1. Schema Design
+Customer Collection
+ Attributes:
+o customer_id: Unique identifier for the customer.
+o name: Name of the customer.
+o policies: Array of policy IDs taken by the customer.
+
+Policy Collection
+ Attributes:
+o policy_id: Unique identifier for the policy.
+o name: Name of the policy.
+o type: Type of the policy (e.g., "Monthly", "Quarterly", "Half Yearly").
+o premium_amount: Premium amount of the policy.
+o company_name: Name of the company providing the policy.
+o customers: Array of customer IDs who have taken the policy.
+
+2. Sample Documents
+Customer Collection:
+json
+Copy code
+{
+"customer_id": 1,
+"name": "John Doe",
+"policies": [101, 102]
+},
+{
+"customer_id": 2,
+"name": "Jane Smith",
+"policies": [102, 103]
+},
+{
+"customer_id": 3,
+"name": "Alice Johnson",
+"policies": [101, 104]
+},
+{
+"customer_id": 4,
+"name": "Bob Brown",
+"policies": [103, 105]
+},
+{
+"customer_id": 5,
+"name": "Charlie Davis",
+"policies": [104, 105]
+}
+Policy Collection:
+json
+Copy code
+{
+"policy_id": 101,
+
+"name": "Komal Jeevan",
+"type": "Monthly",
+"premium_amount": 1000,
+"company_name": "LIC",
+"customers": [1, 3]
+},
+{
+"policy_id": 102,
+"name": "Jeevan Anand",
+"type": "Quarterly",
+"premium_amount": 1500,
+"company_name": "HDFC Life",
+"customers": [1, 2]
+},
+{
+"policy_id": 103,
+"name": "Jeevan Saral",
+"type": "Half Yearly",
+"premium_amount": 2000,
+"company_name": "SBI Life",
+"customers": [2, 4]
+},
+{
+"policy_id": 104,
+"name": "Bhima Bima",
+"type": "Yearly",
+"premium_amount": 2500,
+"company_name": "Max Life",
+"customers": [3, 5]
+},
+{
+"policy_id": 105,
+"name": "Suraksha Kavach",
+"type": "Monthly",
+"premium_amount": 1200,
+"company_name": "ICICI Prudential",
+"customers": [4, 5]
+}
+3. Queries
+a. List the details of customers who have taken the “Komal Jeevan” Policy:
+var policy = db.policies.findOne({ "name": "Komal Jeevan" });
+db.customers.find({ "policies": policy.policy_id }, { "name": 1, "policies": 1, "_id": 0 })
+b. Display the average premium amount:
+db.policies.aggregate([
+{ "$group": { "_id": null, "averagePremium": { "$avg": "$premium_amount" } } },
+{ "$project": { "_id": 0, "averagePremium": 1 } }
+])
+c. Increase the premium amount by 5% for policy type = “Monthly”:
+db.policies.updateMany(
+{ "type": "Monthly" },
+{ "$mul": { "premium_amount": 1.05 } }
+)
+d. Count the number of customers who have taken policy type “Half Yearly”:
+var policies = db.policies.find({ "type": "Half Yearly" }, { "policy_id": 1, "_id": 0 }).toArray();
+
+var policyIds = policies.map(policy => policy.policy_id);
+db.customers.count({ "policies": { "$in": policyIds } })
+
+#####################################################################################################################################
+############################################################## Slip 7 ###############################################################
+#####################################################################################################################################
+Create a 3D text, apply appropriate font, style, color. Use : Hover in the style selector so that the 3D effects appear
+only when you hover over the text
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D Text Hover Effect</title>
+<style>
+body {
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+background-color: f4f4f4;
+font-family: 'Arial', sans-serif;
+}
+.text-container {
+perspective: 1000px;
+}
+.threeD-text {
+font-size: 50px;
+font-weight: bold;
+color: 007bff;
+text-align: center;
+transition: transform 0.3s, color 0.3s;
+}
+.threeD-text:hover {
+transform: rotateY(15deg) rotateX(15deg);
+color: ff4500;
+text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3),
+-2px -2px 5px rgba(0, 0, 0, 0.3);
+}
+</style>
+</head>
+<body>
+<div class="text-container">
+<div class="threeD-text">WelCome to Mysite!</div>
+</div>
+</body>
+</html>
+Model the following information as a document database.
+A customer operates his bank account, does various transactions and get the banking services
+2. Assume appropriate attributes and collections as per the query requirements. [3]
+3. Insert at least 5 documents in each collection. [3]
+4. Answer the following Queries.
+a. List names of all customers whose first name starts with a “S” [3]
+
+b. List all customers who has open an account on 1/1/2020 in ___branch [3]
+c. List the names customers where acctype=”Saving” [4]
+d. Count total no. of loan account holder of .......branch [4]
+solution:
+To model a database for customers operating bank accounts, performing transactions, and utilizing banking services,
+we can create collections for customers, accounts, transactions, and branches. Below is the schema design, sample
+documents, and queries based on your requirements.
+1. Schema Design
+Customer Collection
+ Attributes:
+o customer_id: Unique identifier for the customer.
+o first_name: First name of the customer.
+o last_name: Last name of the customer.
+o accounts: Array of account IDs held by the customer.
+o branch_id: ID of the branch where the customer opened the account.
+
+Account Collection
+ Attributes:
+o account_id: Unique identifier for the account.
+o acctype: Type of account (e.g., "Saving", "Current", "Loan").
+o balance: Current balance of the account.
+o customer_id: ID of the customer who owns the account.
+o open_date: Date when the account was opened.
+o branch_id: ID of the branch where the account was opened.
+
+Branch Collection
+ Attributes:
+o branch_id: Unique identifier for the branch.
+o branch_name: Name of the branch.
+o location: Location of the branch.
+
+Transaction Collection
+ Attributes:
+o transaction_id: Unique identifier for the transaction.
+o account_id: ID of the account related to the transaction.
+o transaction_date: Date of the transaction.
+o amount: Amount involved in the transaction.
+o transaction_type: Type of transaction (e.g., "Deposit", "Withdrawal").
+
+2. Sample Documents
+Customer Collection:
+{
+"customer_id": 1,
+"first_name": "Sam",
+"last_name": "Wilson",
+"accounts": [101, 102],
+"branch_id": 201
+},
+{
+"customer_id": 2,
+"first_name": "Sophia",
+"last_name": "Brown",
+"accounts": [103],
+"branch_id": 202
+},
+{
+"customer_id": 3,
+
+"first_name": "John",
+"last_name": "Smith",
+"accounts": [104],
+"branch_id": 201
+},
+{
+"customer_id": 4,
+"first_name": "Sarah",
+"last_name": "Connor",
+"accounts": [105],
+"branch_id": 203
+},
+{
+"customer_id": 5,
+"first_name": "Alex",
+"last_name": "Johnson",
+"accounts": [106],
+"branch_id": 202
+}
+Account Collection:
+{
+"account_id": 101,
+"acctype": "Saving",
+"balance": 5000,
+"customer_id": 1,
+"open_date": "2020-01-01",
+"branch_id": 201
+},
+{
+"account_id": 102,
+"acctype": "Loan",
+"balance": 20000,
+"customer_id": 1,
+"open_date": "2019-12-15",
+"branch_id": 201
+},
+{
+"account_id": 103,
+"acctype": "Saving",
+"balance": 7000,
+"customer_id": 2,
+"open_date": "2020-01-01",
+"branch_id": 202
+},
+{
+"account_id": 104,
+"acctype": "Current",
+"balance": 10000,
+"customer_id": 3,
+"open_date": "2018-03-20",
+"branch_id": 201
+},
+{
+"account_id": 105,
+
+"acctype": "Saving",
+"balance": 12000,
+"customer_id": 4,
+"open_date": "2020-01-01",
+"branch_id": 203
+}
+Branch Collection:
+{
+"branch_id": 201,
+"branch_name": "Main Branch",
+"location": "City Center"
+},
+{
+"branch_id": 202,
+"branch_name": "East Branch",
+"location": "East Side"
+},
+{
+"branch_id": 203,
+"branch_name": "West Branch",
+"location": "West Side"
+}
+Transaction Collection:
+{
+"transaction_id": 1001,
+"account_id": 101,
+"transaction_date": "2024-01-15",
+"amount": 1000,
+"transaction_type": "Deposit"
+},
+{
+"transaction_id": 1002,
+"account_id": 102,
+"transaction_date": "2024-02-05",
+"amount": 2000,
+"transaction_type": "Withdrawal"
+},
+{
+"transaction_id": 1003,
+"account_id": 103,
+"transaction_date": "2024-03-10",
+"amount": 1500,
+"transaction_type": "Deposit"
+},
+{
+"transaction_id": 1004,
+"account_id": 104,
+"transaction_date": "2024-01-25",
+"amount": 5000,
+"transaction_type": "Deposit"
+},
+{
+"transaction_id": 1005,
+"account_id": 105,
+
+"transaction_date": "2024-02-20",
+"amount": 2000,
+"transaction_type": "Withdrawal"
+}
+3. Queries
+a. List names of all customers whose first name starts with "S":
+db.customers.find({ "first_name": { "$regex": "^S" } }, { "first_name": 1, "last_name": 1, "_id": 0 })
+b. List all customers who opened an account on 1/1/2020 in a specific branch (e.g., Main Branch):
+var branch = db.branches.findOne({ "branch_name": "Main Branch" });
+db.accounts.aggregate([
+{ "$match": { "open_date": "2020-01-01", "branch_id": branch.branch_id } },
+{ "$lookup": { "from": "customers", "localField": "customer_id", "foreignField": "customer_id", "as":
+"customer_details" } },
+{ "$unwind": "$customer_details" },
+{ "$project": { "customer_details.first_name": 1, "customer_details.last_name": 1, "_id": 0 } }
+])
+c. List the names of customers where acctype = "Saving":
+db.accounts.aggregate([
+{ "$match": { "acctype": "Saving" } },
+{ "$lookup": { "from": "customers", "localField": "customer_id", "foreignField": "customer_id", "as":
+"customer_details" } },
+{ "$unwind": "$customer_details" },
+{ "$project": { "customer_details.first_name": 1, "customer_details.last_name": 1, "_id": 0 } }
+])
+d. Count the total number of loan account holders in a specific branch (e.g., East Branch):
+var branch = db.branches.findOne({ "branch_name": "East Branch" });
+db.accounts.count({ "acctype": "Loan", "branch_id": branch.branch_id })
+
+#####################################################################################################################################
+############################################################## Slip 8 ###############################################################
+#####################################################################################################################################
+Create a button with different style (Secondary, Primary, Success, Error, Info, Warning, Danger) using BootStrap
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bootstrap Button Styles</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+body {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+height: 100vh;
+background-color: f4f4f4;
+}
+.btn-group {
+margin: 10px;
+}
+</style>
+</head>
+<body>
+<h1>Bootstrap Button Styles</h1>
+<div class="btn-group">
+<button class="btn btn-primary">Primary</button>
+<button class="btn btn-secondary">Secondary</button>
+<button class="btn btn-success">Success</button>
+<button class="btn btn-danger">Danger</button>
+<button class="btn btn-warning">Warning</button>
+<button class="btn btn-info">Info</button>
+<button class="btn btn-light">Light</button>
+<button class="btn btn-dark">Dark</button>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+Explanation:
+- Bootstrap CSS : The code includes the Bootstrap CSS from a CDN, which provides the styles for the buttons.
+- Button Classes : Each button uses Bootstrap classes:
+- `btn-primary`: Blue button
+- `btn-secondary`: Gray button
+- `btn-success`: Green button
+- `btn-danger`: Red button
+- `btn-warning`: Yellow button
+- `btn-info`: Light blue button
+
+- `btn-light`: Light gray button
+- `btn-dark`: Dark gray button
+- Layout : The buttons are arranged in a flex container to center them vertically and horizontally.
+You can modify the button text or add additional styles as needed. Just save the code and open it in a browser to see the
+buttons in action!
+
+1. Model the following inventory information as a document database.
+The inventory keeps track of various items. The items are tagged in various categories. Items may be kept in various
+warehouses and each warehouse keeps track of the quantity of the item.
+2. Assume appropriate attributes and collections as per the query requirements [3]
+3. Insert at least 5 documents in each collection. [3]
+4. Answer the following Queries.
+a. List all the items qty is greater than 300 [3]
+b. List all items which have tags less than 5 [3]
+c. List all items having status equal to “B” or having quantity less than 50 and height of the product should be
+greater than 8 [4]
+d. Find all warehouse that keeps item “Planner” and having in stock quantity less than 20 [4]
+
+To model the inventory information as a document database, we'll define two collections: Items and
+Warehouses . Each collection will have appropriate attributes based on the requirements.
+Collections and Documents
+1. Collection: `Items`
+Attributes:
+- `item_id`: Unique identifier for the item
+- `name`: Name of the item
+- `tags`: Array of tags associated with the item
+- `quantity`: Quantity of the item in stock
+- `status`: Status of the item (e.g., "A", "B", "C")
+- `height`: Height of the item
+Example Documents:
+```json
+[
+{
+"item_id": "1",
+"name": "Notebook",
+"tags": ["stationery", "writing", "paper"],
+"quantity": 350,
+"status": "A",
+"height": 10
+},
+{
+"item_id": "2",
+"name": "Planner",
+"tags": ["stationery", "planning", "organizer"],
+"quantity": 15,
+"status": "B",
+"height": 9
+
+},
+{
+"item_id": "3",
+"name": "Marker",
+"tags": ["stationery", "writing", "color"],
+"quantity": 450,
+"status": "A",
+"height": 5
+},
+{
+"item_id": "4",
+"name": "Eraser",
+"tags": ["stationery", "writing"],
+"quantity": 20,
+"status": "C",
+"height": 3
+},
+{
+"item_id": "5",
+"name": "Folder",
+"tags": ["stationery", "organization", "storage"],
+"quantity": 500,
+"status": "A",
+"height": 12
+}
+]
+```
+2. Collection: `Warehouses`
+Attributes:
+- `warehouse_id`: Unique identifier for the warehouse
+- `location`: Location of the warehouse
+- `stock`: Array of items stored in the warehouse, with quantity
+Example Documents:
+```json
+[
+{
+"warehouse_id": "1",
+"location": "New York",
+"stock": [
+{"item_id": "1", "quantity": 200},
+{"item_id": "2", "quantity": 15}
+]
+},
+{
+"warehouse_id": "2",
+"location": "Los Angeles",
+"stock": [
+{"item_id": "3", "quantity": 300},
+{"item_id": "4", "quantity": 20}
+]
+},
+{
+"warehouse_id": "3",
+"location": "Chicago",
+
+"stock": [
+{"item_id": "5", "quantity": 150}
+]
+},
+{
+"warehouse_id": "4",
+"location": "Houston",
+"stock": [
+{"item_id": "1", "quantity": 150},
+{"item_id": "3", "quantity": 150}
+]
+},
+{
+"warehouse_id": "5",
+"location": "Miami",
+"stock": [
+{"item_id": "2", "quantity": 5},
+{"item_id": "5", "quantity": 200}
+]
+}
+]
+```
+Queries
+a. List all the items where quantity is greater than 300
+```json
+db.Items.find({"quantity": {"$gt": 300}})
+```
+Result:
+```json
+[
+{
+"item_id": "1",
+"name": "Notebook",
+"tags": ["stationery", "writing", "paper"],
+"quantity": 350,
+"status": "A",
+"height": 10
+},
+{
+"item_id": "3",
+"name": "Marker",
+"tags": ["stationery", "writing", "color"],
+"quantity": 450,
+"status": "A",
+"height": 5
+},
+{
+"item_id": "5",
+"name": "Folder",
+"tags": ["stationery", "organization", "storage"],
+"quantity": 500,
+
+"status": "A",
+"height": 12
+}
+]
+```
+b. List all items which have tags less than 5
+```json
+db.Items.find({"tags": {"$size": {"$lt": 5}}})
+```
+Result:
+```json
+[
+{
+"item_id": "2",
+"name": "Planner",
+"tags": ["stationery", "planning", "organizer"],
+"quantity": 15,
+"status": "B",
+"height": 9
+},
+{
+"item_id": "4",
+"name": "Eraser",
+"tags": ["stationery", "writing"],
+"quantity": 20,
+"status": "C",
+"height": 3
+}
+]
+```
+c. List all items having status equal to “B” or having quantity less than 50 and height of the product greater
+than 8
+```json
+db.Items.find({
+"$or": [
+{"status": "B"},
+{"$and": [{"quantity": {"$lt": 50}}, {"height": {"$gt": 8}}]}
+]
+})
+```
+Result:
+```json
+[
+{
+"item_id": "2",
+"name": "Planner",
+"tags": ["stationery", "planning", "organizer"],
+"quantity": 15,
+"status": "B",
+
+"height": 9
+},
+{
+"item_id": "4",
+"name": "Eraser",
+"tags": ["stationery", "writing"],
+"quantity": 20,
+"status": "C",
+"height": 3
+}
+]
+d. Find all warehouses that keep item “Planner” and have in-stock quantity less than 20
+```json
+db.Warehouses.find({
+"stock": {
+"$elemMatch": {
+"item_id": "2",
+"quantity": {"$lt": 20}
+}
+}
+})
+```
+Result:
+```json
+[
+{
+"warehouse_id": "1",
+"location": "New York",
+"stock": [
+{"item_id": "1", "quantity": 200},
+{"item_id": "2", "quantity": 15}
+]
+},
+{
+"warehouse_id": "5",
+"location": "Miami",
+"stock": [
+{"item_id": "2", "quantity": 5},
+{"item_id": "5", "quantity": 200}
+]
+}
+]
+```

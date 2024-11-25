@@ -1,0 +1,359 @@
+#####################################################################################################################################
+############################################################## Slip 1 ###############################################################
+#####################################################################################################################################
+
+To model a property system in MongoDB, we can create two collections: `Owners` and `Properties`. Below is a
+structured representation of the collections, sample documents, and the queries to retrieve the required information.
+1. Collections
+Owners Collection
+Structure:
+- `_id`: ObjectId (auto-generated)
+- `name`: String (owner's name)
+- `contact`: String (owner's contact number)
+- `email`: String (owner's email)
+- `properties`: Array of property IDs (references to properties owned)
+Sample Documents:
+```json
+[
+{
+"name": "Mr. Patil",
+"contact": "1234567890",
+"email": "patil@example.com",
+"properties": []
+},{
+"name": "Mrs. Sharma",
+"contact": "0987654321",
+"email": "sharma@example.com",
+"properties": []
+},{
+"name": "Mr. Verma",
+"contact": "1122334455",
+"email": "verma@example.com",
+"properties": []
+},{
+"name": "Ms. Desai",
+"contact": "2233445566",
+"email": "desai@example.com",
+"properties": []
+},{
+"name": "Mr. Rao",
+"contact": "3344556677",
+"email": "rao@example.com",
+"properties": []
+}
+]
+
+Properties Collection
+
+Structure:
+- `_id`: ObjectId (auto-generated)
+- `name`: String (property name)
+- `location`: String (property location)
+- `area`: String (area or neighborhood)
+- `rate`: Number (property rate)
+- `owner_id`: ObjectId (reference to the owner)
+Sample Documents:
+```json
+[
+{
+"name": "Sunny Apartments",
+"location": "Nashik",
+"area": "Central",
+"rate": 90000,
+"owner_id": ObjectId("60a7b7c1f9d1e7bff80e0001") // Mr. Patil
+},{
+"name": "Green Fields",
+"location": "Nashik",
+"area": "East",
+"rate": 75000,
+"owner_id": ObjectId("60a7b7c1f9d1e7bff80e0001") // Mr. Patil
+},{
+"name": "Royal Estates",
+"location": "Pune",
+"area": "Downtown",
+"rate": 120000,
+"owner_id": ObjectId("60a7b7c1f9d1e7bff80e0002") // Mrs. Sharma
+},{
+"name": "Ocean View",
+"location": "Mumbai",
+"area": "Coastal",
+"rate": 150000,
+"owner_id": ObjectId("60a7b7c1f9d1e7bff80e0003") // Mr. Verma
+},{
+"name": "Mountain Retreat",
+"location": "Nashik",
+"area": "Hills",
+"rate": 85000,
+"owner_id": ObjectId("60a7b7c1f9d1e7bff80e0004") // Ms. Desai
+}
+]
+```
+2. Queries
+a. Display area-wise property details.
+db.Properties.aggregate([
+
+{
+$group: {
+_id: "$area",
+properties: { $push: { name: "$name", location: "$location", rate: "$rate" } }
+}
+} ]);
+Example Output:
+[
+{
+"_id": "Central",
+"properties": [{ "name": "Sunny Apartments", "location": "Nashik", "rate": 90000 }]
+},{
+"_id": "East",
+"properties": [{ "name": "Green Fields", "location": "Nashik", "rate": 75000 }]
+},{
+"_id": "Downtown",
+"properties": [{ "name": "Royal Estates", "location": "Pune", "rate": 120000 }]
+},{
+"_id": "Coastal",
+"properties": [{ "name": "Ocean View", "location": "Mumbai", "rate": 150000 }]
+},{
+"_id": "Hills",
+"properties": [{ "name": "Mountain Retreat", "location": "Nashik", "rate": 85000 }]
+}
+]
+```
+b. Display property owned by 'Mr. Patil' having minimum rate.
+const owner = db.Owners.findOne({ name: "Mr. Patil" });
+db.Properties.find({ owner_id: owner._id }).sort({ rate: 1 }).limit(1);
+
+Example Output:
+{
+"name": "Green Fields",
+"location": "Nashik",
+"area": "East",
+"rate": 75000,
+"owner_id": ObjectId("60a7b7c1f9d1e7bff80e0001")
+}
+c. Give the details of the owner whose property is at “Nashik”.
+const propertiesInNashik = db.Properties.find({ location: "Nashik" }).toArray();
+const ownerIds = propertiesInNashik.map(property => property.owner_id);
+db.Owners.find({ _id: { $in: ownerIds } });
+Example Output:
+
+[
+{
+"name": "Mr. Patil",
+"contact": "1234567890",
+"email": "patil@example.com",
+"properties": []
+},{
+"name": "Ms. Desai",
+"contact": "2233445566",
+"email": "desai@example.com",
+"properties": []
+}
+]
+d. Display the area of property whose rate is less than 100000.
+db.Properties.find({ rate: { $lt: 100000 } }, { area: 1 });
+Example Output:
+[
+{ "area": "Central" },{ "area": "East" },{ "area": "Hills" }
+]
+
+#####################################################################################################################################
+############################################################## Slip 2 ###############################################################
+#####################################################################################################################################
+Create a container add row inside it and add 3 columns inside row using BootStrap.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bootstrap Container with Columns</title>
+<!-- Bootstrap CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+<div class="row">
+<div class="col">
+<h2>Column 1</h2>
+<p>This is the first column.</p>
+</div>
+<div class="col">
+<h2>Column 2</h2>
+<p>This is the second column.</p>
+</div>
+<div class="col">
+<h2>Column 3</h2>
+<p>This is the third column.</p>
+</div>
+</div>
+</div>
+<!-- Bootstrap JS and dependencies (optional) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+1. Data Model Design
+We'll define the following collections:
+Collection: publishers
+Each document represents a publisher.
+ Attributes:
+o _id: Unique identifier for the publisher.
+o name: Name of the publisher.
+o state: State where the publisher is located.
+o city: City where the publisher is located.
+o newspapers: Array of newspaper IDs (referencing documents in the newspapers collection).
+
+Collection: newspapers
+Each document represents a newspaper.
+ Attributes:
+o _id: Unique identifier for the newspaper.
+o title: Title of the newspaper.
+o language: Language of the newspaper.
+
+o publisher_id: ID of the publisher (referencing a document in the publishers collection).
+o city: City where the newspaper is published.
+o state: State where the newspaper is published.
+o daily_sales: Daily sales figures.
+
+Collection: cities
+Each document represents a city.
+ Attributes:
+o _id: Unique identifier for the city.
+o name: Name of the city.
+o state: State where the city is located.
+o newspapers: Array of newspaper IDs (referencing documents in the newspapers collection).
+
+2. Sample Documents
+publishers Collection:
+json
+[
+{
+"_id": 1,
+"name": "Publisher One",
+"state": "Maharashtra",
+"city": "Mumbai",
+"newspapers": [1, 2]
+},{
+"_id": 2,
+"name": "Publisher Two",
+"state": "Gujarat",
+"city": "Ahmedabad",
+"newspapers": [3]
+},{
+"_id": 3,
+"name": "Publisher Three",
+"state": "Maharashtra",
+"city": "Nashik",
+"newspapers": [4]
+},{
+"_id": 4,
+"name": "Publisher Four",
+"state": "Gujarat",
+"city": "Surat",
+"newspapers": [5]
+},{
+"_id": 5,
+"name": "Publisher Five",
+"state": "Maharashtra",
+"city": "Pune",
+"newspapers": [6]
+}
+]
+newspapers Collection:
+json
+Copy code
+
+[
+{
+"_id": 1,
+"title": "Mumbai Mirror",
+"language": "English",
+"publisher_id": 1,
+"city": "Mumbai",
+"state": "Maharashtra",
+"daily_sales": 50000
+}, {
+"_id": 2,
+"title": "Maharashtra Times",
+"language": "Marathi",
+"publisher_id": 1,
+"city": "Mumbai",
+"state": "Maharashtra",
+"daily_sales": 75000
+}, {
+"_id": 3,
+"title": "Gujarat Samachar",
+"language": "Gujarati",
+"publisher_id": 2,
+"city": "Ahmedabad",
+"state": "Gujarat",
+"daily_sales": 60000
+}, {
+"_id": 4,
+"title": "Sakal Nashik",
+"language": "Marathi",
+"publisher_id": 3,
+"city": "Nashik",
+"state": "Maharashtra",
+"daily_sales": 40000
+},{
+"_id": 5,
+"title": "Sandesh Surat",
+"language": "Gujarati",
+"publisher_id": 4,
+"city": "Surat",
+"state": "Gujarat",
+"daily_sales": 35000
+},{
+"_id": 6,
+"title": "Sakal Pune",
+"language": "Marathi",
+"publisher_id": 5,
+"city": "Pune",
+"state": "Maharashtra",
+"daily_sales": 45000}
+]
+cities Collection:
+json
+Copy code
+[
+{
+"_id": 1,
+"name": "Mumbai",
+"state": "Maharashtra",
+"newspapers": [1, 2]
+},{
+"_id": 2,
+"name": "Ahmedabad",
+"state": "Gujarat",
+"newspapers": [3]
+},{
+"_id": 3,
+"name": "Nashik",
+"state": "Maharashtra",
+"newspapers": [4]
+},{
+"_id": 4,
+"name": "Surat",
+"state": "Gujarat",
+"newspapers": [5]
+},{
+"_id": 5,
+"name": "Pune",
+"state": "Maharashtra",
+"newspapers": [6]
+}
+]
+3. MongoDB Queries
+a. List all newspapers available in “Nashik” city.
+db.newspapers.find({ city: "Nashik" }, { title: 1, _id: 0 })
+b. List all the newspapers of “Marathi” language.
+db.newspapers.find({ language: "Marathi" }, { title: 1, _id: 0 })
+c. Count the number of publishers in the “Gujarat” state.
+db.publishers.countDocuments({ state: "Gujarat" })
+d. Write a cursor to show newspapers with the highest sales in Maharashtra State.
+var cursor = db.newspapers.find({ state: "Maharashtra" }).sort({ daily_sales: -1 }).limit(1);
+while (cursor.hasNext()) {
+printjson(cursor.next());
+}
+

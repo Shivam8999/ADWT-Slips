@@ -1,0 +1,526 @@
+#####################################################################################################################################
+############################################################## Slip 3 ###############################################################
+#####################################################################################################################################
+Write a bootstrap application to display thumbnails of the images.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Thumbnails</title>
+<!-- Bootstrap CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<style>
+.thumbnail {
+margin-bottom: 20px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h1 class="text-center my-4">Image Thumbnails</h1>
+<div class="row">
+<div class="col-md-4">
+<div class="card thumbnail">
+<img src="https://via.placeholder.com/300" class="card-img-top" alt="Image 1">
+<div class="card-body">
+<h5 class="card-title">Image 1</h5>
+<p class="card-text">Description for image 1.</p>
+</div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="card thumbnail">
+<img src="https://via.placeholder.com/300" class="card-img-top" alt="Image 2">
+<div class="card-body">
+<h5 class="card-title">Image 2</h5>
+<p class="card-text">Description for image 2.</p>
+</div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="card thumbnail">
+<img src="https://via.placeholder.com/300" class="card-img-top" alt="Image 3">
+<div class="card-body">
+<h5 class="card-title">Image 3</h5>
+<p class="card-text">Description for image 3.</p>
+</div>
+</div>
+</div>
+<!-- Add more images as needed -->
+</div>
+</div>
+
+<!—B
+
+Model the following system as a document database. Consider employee and department’s information. Assume
+appropriate attributes and collections as per the query
+requirements. [3]
+Insert at least 5 documents in each collection. [3]
+Answer the following Queries.
+Display name of employee who has highest salary [3]
+Display biggest department with max. no. of employees [3]
+Write a cursor which shows department wise employee information [4]
+List all the employees who work in Sales dept and salary > 50000 [4]
+1. Data Model Design
+We'll define the following collections:
+Collection: employees
+Each document represents an employee.
+ Attributes:
+o _id: Unique identifier for the employee.
+o name: Name of the employee.
+o department_id: ID of the department (referencing a document in the departments collection).
+o position: Job title or position of the employee.
+o salary: Salary of the employee.
+
+Collection: departments
+Each document represents a department.
+ Attributes:
+o _id: Unique identifier for the department.
+o name: Name of the department.
+o location: Location of the department.
+o employees: Array of employee IDs (referencing documents in the employees collection).
+
+2. Sample Documents
+employees Collection:
+json
+Copy code
+[
+{
+"_id": 1,
+"name": "John Doe",
+"department_id": 1,
+"position": "Manager",
+"salary": 75000
+},
+{
+"_id": 2,
+"name": "Jane Smith",
+"department_id": 2,
+"position": "Sales Executive",
+"salary": 60000
+},
+{
+"_id": 3,
+"name": "Alice Johnson",
+"department_id": 1,
+"position": "Developer",
+"salary": 50000
+
+},
+{
+"_id": 4,
+"name": "Bob Brown",
+"department_id": 3,
+"position": "HR Specialist",
+"salary": 55000
+},
+{
+"_id": 5,
+"name": "Charlie Davis",
+"department_id": 2,
+"position": "Sales Executive",
+"salary": 45000
+}
+]
+departments Collection:
+json
+Copy code
+[
+{
+"_id": 1,
+"name": "IT",
+"location": "New York",
+"employees": [1, 3]
+},
+{
+"_id": 2,
+"name": "Sales",
+"location": "San Francisco",
+"employees": [2, 5]
+},
+{
+"_id": 3,
+"name": "HR",
+"location": "Chicago",
+"employees": [4]
+},
+{
+"_id": 4,
+"name": "Marketing",
+"location": "Los Angeles",
+"employees": []
+},
+{
+"_id": 5,
+"name": "Finance",
+"location": "Boston",
+"employees": []
+}
+]
+
+3. MongoDB Queries
+a. Display the name of the employee who has the highest salary.
+db.employees.find().sort({ salary: -1 }).limit(1).project({ name: 1, _id: 0 })
+b. Display the biggest department with the maximum number of employees.
+db.departments.aggregate([
+{ $project: { name: 1, numberOfEmployees: { $size: "$employees" } } },
+{ $sort: { numberOfEmployees: -1 } },
+{ $limit: 1 }
+])
+c. Write a cursor to show department-wise employee information.
+var cursor = db.departments.aggregate([
+{
+$lookup: {
+from: "employees",
+localField: "employees",
+foreignField: "_id",
+as: "employee_info"
+}
+},
+{ $unwind: "$employee_info" },
+{ $group: { _id: "$name", employees: { $push: "$employee_info" } } }
+]);
+while (cursor.hasNext()) {
+printjson(cursor.next());
+}
+d. List all the employees who work in the Sales department and have a salary greater than 50000.
+db.employees.find({ department_id: 2, salary: { $gt: 50000 } }, { name: 1, _id: 0 })
+
+#####################################################################################################################################
+############################################################## Slip 4 ###############################################################
+#####################################################################################################################################
+Write a bootstrap program for the following
+“The .table class adds basic styling (light padding and only horizontal dividers) to a table” The table can have the first
+name, last name, and email id as columns
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bootstrap Table Example</title>
+<!-- Bootstrap CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container my-4">
+<h1 class="text-center">User Information</h1>
+<table class="table">
+<thead class="thead-light">
+<tr>
+<th>First Name</th>
+<th>Last Name</th>
+<th>Email ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>John</td>
+<td>Doe</td>
+<td>john.doe@example.com</td>
+</tr>
+<tr>
+<td>Jane</td>
+<td>Smith</td>
+<td>jane.smith@example.com</td>
+</tr>
+<tr>
+<td>Michael</td>
+<td>Johnson</td>
+<td>michael.johnson@example.com</td>
+</tr>
+<tr>
+<td>Emily</td>
+<td>Williams</td>
+<td>emily.williams@example.com</td>
+</tr>
+<tr>
+<td>David</td>
+<td>Brown</td>
+<td>david.brown@example.com</td>
+</tr>
+</tbody>
+
+</table>
+</div>
+<!-- Bootstrap JS and dependencies (optional) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+1. Model the following information system as a document database.
+Consider hospitals around Nashik. Each hospital may have one or more
+specializations like Pediatric, Gynaec, Orthopedic, etc. A person can
+recommend/provide review for a hospital. A doctor can give service to one
+or more hospitals.
+2. Assume appropriate attributes and collections as per the query
+requirements. [3]
+3. Insert at least 10 documents in each collection. [3]
+4. Answer the following Queries
+a. List the names of hospitals with............ specialization. [3]
+b. List the Names of all hospital located in ....... city [3]
+c. List the names of hospitals where Dr. Deshmukh visits [4]
+d. List the names of hospitals whose rating >=4 [4]
+
+Solution:
+1. Schema Design
+Hospital Collection
+ Attributes:
+o hospital_id: Unique identifier for the hospital.
+o name: Name of the hospital.
+o city: City where the hospital is located.
+o specializations: Array of specializations offered by the hospital.
+o doctors: Array of doctor IDs who visit the hospital.
+o rating: Average rating of the hospital.
+
+Doctor Collection
+ Attributes:
+o doctor_id: Unique identifier for the doctor.
+o name: Name of the doctor.
+o specialization: Specialization of the doctor.
+o hospitals: Array of hospital IDs where the doctor visits.
+
+Review Collection
+ Attributes:
+o review_id: Unique identifier for the review.
+o hospital_id: ID of the hospital being reviewed.
+o reviewer_name: Name of the person who provided the review.
+o rating: Rating given by the reviewer (out of 5).
+o comment: Textual comment of the review.
+
+2. Sample Documents
+Hospital Collection:
+{
+"hospital_id": 1,
+"name": "Nashik General Hospital",
+"city": "Nashik",
+"specializations": ["Pediatric", "Orthopedic"],
+
+"doctors": [101, 102],
+"rating": 4.5
+},
+{
+"hospital_id": 2,
+"name": "Sunrise Health Care",
+"city": "Nashik",
+"specializations": ["Gynaec", "Cardiology"],
+"doctors": [103, 104],
+"rating": 4.0
+}
+Doctor Collection:
+{
+"doctor_id": 101,
+"name": "Dr. Deshmukh",
+"specialization": "Pediatric",
+"hospitals": [1]
+},
+{
+"doctor_id": 102,
+"name": "Dr. Sharma",
+"specialization": "Orthopedic",
+"hospitals": [1, 2]
+}
+Review Collection:
+{
+"review_id": 1001,
+"hospital_id": 1,
+"reviewer_name": "John Doe",
+"rating": 5,
+"comment": "Excellent care!"
+},
+{
+"review_id": 1002,
+"hospital_id": 2,
+"reviewer_name": "Jane Smith",
+"rating": 4,
+"comment": "Very professional staff."
+}
+3. Queries
+a. List the names of hospitals with a particular specialization:
+db.hospitals.find({ "specializations": "Pediatric" }, { "name": 1, "_id": 0 })
+b. List the names of all hospitals located in a specific city:
+db.hospitals.find({ "city": "Nashik" }, { "name": 1, "_id": 0 })
+c. List the names of hospitals where Dr. Deshmukh visits:
+var doctor = db.doctors.findOne({ "name": "Dr. Deshmukh" });
+db.hospitals.find({ "doctors": doctor.doctor_id }, { "name": 1, "_id": 0 })
+d. List the names of hospitals whose rating is greater than or equal to 4:
+db.hospitals.find({ "rating": { "$gte": 4 } }, { "name": 1, "_id": 0 })
+This schema and the example queries should meet the requirements for modeling the hospital information system as a
+document database. You can modify the attributes as needed based on specific requirements.
+
+#####################################################################################################################################
+############################################################## Slip 5 ###############################################################
+#####################################################################################################################################
+Write a HTML code, which generate the following output
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>List of Persons</title>
+<style>
+body {
+font-family: Arial, sans-serif;
+margin: 20px;
+}
+table {
+width: 100%;
+border-collapse: collapse;
+border: 2px solid 000; / Border for the table /
+border-radius: 10px; / Rounded corners /
+overflow: hidden; / Ensure corners are rounded /
+}
+th, td {
+border: 1px solid 000; / Border for cells /
+padding: 8px;
+text-align: left;
+}
+th {
+background-color: f2f2f2; / Light grey background for header /
+}
+tr:hover {
+background-color: f9f9f9; / Highlight row on hover /
+}
+</style>
+</head>
+<body>
+<h1>List of Persons</h1>
+<table>
+<thead>
+<tr>
+<th>Srno</th>
+<th>Person Name</th>
+<th>Age</th>
+
+<th>Country</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>John Doe</td>
+<td>30</td>
+<td>USA</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Jane Smith</td>
+<td>25</td>
+<td>UK</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Emily Johnson</td>
+<td>28</td>
+<td>Canada</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
+. Model the following database. Many employees working on one project.
+A company has various ongoing projects.
+2. Assume appropriate attributes and collections as per the query
+requirements. [3]
+3. Insert at least 5 documents in each collection. [3]
+4. Answer the following Queries
+a. List all names of projects where Project_type =..... [3]
+b. List all the projects with duration greater than 3 months [3]
+c. Count no. of employees working on ........project [4]
+d. List the names of projects on which Mr. Patil is working [4]
+To model a database where many employees work on one project and a company has various ongoing projects, we'll
+use a document-oriented approach, like MongoDB. Below is the schema design, sample documents, and queries based
+on your requirements.
+1. Schema Design
+Employee Collection
+ Attributes:
+o employee_id: Unique identifier for the employee.
+o name: Name of the employee.
+o projects: Array of project IDs the employee is working on.
+
+Project Collection
+ Attributes:
+o project_id: Unique identifier for the project.
+o name: Name of the project.
+o type: Type of the project (e.g., "Software", "Construction").
+o duration_months: Duration of the project in months.
+
+o employees: Array of employee IDs working on the project.
+
+2. Sample Documents
+Employee Collection:
+{
+"employee_id": 1,
+"name": "Mr. Patil",
+"projects": [101, 102]
+},
+{
+"employee_id": 2,
+"name": "Ms. Sharma",
+"projects": [101, 103]
+},
+{
+"employee_id": 3,
+"name": "Mr. Gupta",
+"projects": [102, 104]
+},
+{
+"employee_id": 4,
+"name": "Ms. Rao",
+"projects": [103, 105]
+},
+{
+"employee_id": 5,
+"name": "Mr. Mehta",
+"projects": [104, 105]
+}
+Project Collection:
+{
+"project_id": 101,
+"name": "Project Alpha",
+"type": "Software",
+"duration_months": 6,
+"employees": [1, 2]
+},
+{
+"project_id": 102,
+"name": "Project Beta",
+"type": "Construction",
+"duration_months": 4,
+"employees": [1, 3]
+},
+{
+"project_id": 103,
+"name": "Project Gamma",
+"type": "Research",
+"duration_months": 2,
+"employees": [2, 4]
+},
+{
+"project_id": 104,
+"name": "Project Delta",
+"type": "Software",
+
+"duration_months": 5,
+"employees": [3, 5]
+},
+{
+"project_id": 105,
+"name": "Project Epsilon",
+"type": "Infrastructure",
+"duration_months": 8,
+"employees": [4, 5]
+}
+3. Queries
+a. List all names of projects where Project_type = "Software":
+    db.projects.find({ "type": "Software" }, { "name": 1, "_id": 0 })
+b. List all the projects with a duration greater than 3 months:
+    db.projects.find({ "duration_months": { "$gt": 3 } }, { "name": 1, "_id": 0 })
+c. Count the number of employees working on "Project Alpha":
+    var project = db.projects.findOne({ "name": "Project Alpha" }); 
+    db.employees.count({ "projects": project.project_id })
+d. List the names of projects on which Mr. Patil is working:
+    var employee = db.employees.findOne({ "name": "Mr. Patil" });
+    db.projects.find({ "project_id": { "$in": employee.projects } }, { "name": 1, "_id": 0 })

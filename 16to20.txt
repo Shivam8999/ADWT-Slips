@@ -1,0 +1,1216 @@
+######################################################################################################################################
+############################################################## Slip 16 ###############################################################
+######################################################################################################################################
+
+Model the following food service industry information as a graph model, and answer the following queries using
+Cypher.
+Consider food service industries like ZOMATO, Swiggy around us. Popular restaurants are connected to these
+industries to increase sell. A person order food through this industry and get offers. A person give rate(1-5 stars) to
+company its facility/facilities. and can recommend this to his/her friends.
+1. Identify the labels and relationships, along with their properties, and draw a high-level Graph model. [3]
+2. Create nodes and relationships, along with their properties, and visualize your actual Graph model. [3]
+3. Answer the Queries.
+a. Count no. of customers who place order on “1/1/2023” [3]
+b. List the names of customers whose name starts with S and place order using Swiggy [3]
+c. List the names of hotels with high rating (>=4). [4]
+d. List the most recommended hotels in....... area. [4]
+To model the food service industry in Neo4j and answer your queries, let’s outline the labels, relationships, properties,
+and then provide the Cypher queries.
+1. Graph Model
+Labels and Relationships
+Nodes (Labels):
+Person: Represents customers.
+- Properties: `name`, `customer_id`
+- Restaurant: Represents popular restaurants.
+- Properties: `name`, `restaurant_id`, `location`
+- FoodService: Represents services like Zomato or Swiggy.
+- Properties: `name`, `service_id`
+- Order: Represents orders placed by customers.
+- Properties: `order_id`, `date`, `offer`
+- Rating: Represents ratings given by customers to food services.
+- Properties: `stars`, `comment`
+- Relationships:
+- PLACED: (Person) -[PLACED]-> (Order)
+- ORDERED_FROM: (Order) -[ORDERED_FROM]-> (FoodService)
+- RECOMMENDED: (Person) -[RECOMMENDED]-> (Restaurant)
+- RATED: (Person) -[RATED]-> (FoodService)
+2. Nodes and Relationships
+Sample Nodes Creation
+Person
+CREATE
+(p1:Person {name: 'Sam', customer_id: 'C001'}),
+(p2:Person {name: 'Sonia', customer_id: 'C002'}),
+(p3:Person {name: 'Alex', customer_id: 'C003'}),
+(p4:Person {name: 'Martin', customer_id: 'C004'}),
+(p5:Person {name: 'Jimmy', customer_id: 'C005'}),
+(p6:Person {name: 'Dinel', customer_id: 'C006'})
+
+Restaurant
+Create
+(r1:Restaurant {name: 'Pizza Place', restaurant_id: 'R001', location: 'Chinchwad'}),
+(r2:Restaurant {name: 'Burger House', restaurant_id: 'R002', location: 'Nigdi'}),
+(r3:Restaurant {name: 'My Cafe', restaurant_id: 'R003', location: 'Nigdi'}),
+(r4:Restaurant {name: 'Delta', restaurant_id: 'R004', location: 'Pimpri'})
+FOOD Services
+Create (fs1:FoodService {name: 'Swiggy', service_id: 'FS001'}), (fs2:FoodService {name: 'Zomato', service_id:
+'FS002'}), (fs3:FoodService {name: 'Foodpanda', service_id: 'FS003'}), (fs4:FoodService {name: 'Doordash',
+service_id: 'FS004'})
+Order
+Create
+(o1:Order {order_id: 'O001', date: '2023-01-01', offer: '10% OFF'}), (o2:Order {order_id: 'O002', date: '2023-01-01',
+offer: '20% OFF'}), (o3:Order {order_id: 'O003', date: '2023-01-02', offer: '10% OFF'}), (o4:Order {order_id: 'O004',
+date: '2023-01-02', offer: '20 OFF'})
+Relations
+Create (r1)<-[:RECOMMENDED]-(p2),
+(p1)-[:PLACED]->(o1),
+(o1)-[:ORDERED_FROM]->(fs1),
+(p1)-[:RATED {stars: 5, comment: 'Great service!'}]->(fs1)
+Create (‘Pizza Place’)<-[:RECOMMENDED]-(‘Sonia’),
+(p1)-[:PLACED]->(o1),
+(o1)-[:ORDERED_FROM]->(fs1),
+(p1)-[:RATED {stars: 5, comment: 'Great service!'}]->(fs1)
+OR
+CREATE
+(p1:Person {name: 'Sam', customer_id: 'C001'}),
+(p2:Person {name: 'Sonia', customer_id: 'C002'}),
+(p3:Person {name: 'Alex', customer_id: 'C003'}),
+(p4:Person {name: 'Martin', customer_id: 'C004'}),
+(r1:Restaurant {name: 'Pizza Place', restaurant_id: 'R001', location: 'Chinchwad'}), (r2:Restaurant {name: 'Burger
+House', restaurant_id: 'R002', location: 'Nigdi'}), (fs1:FoodService {name: 'Swiggy', service_id: 'FS001'}),
+(fs2:FoodService {name: 'Zomato', service_id: 'FS002'}),
+(o1:Order {order_id: 'O001', date: '2023-01-01', offer: '10% OFF'}),
+(o2:Order {order_id: 'O002', date: '2023-01-01', offer: '20% OFF'}),
+(r1)<-[:RECOMMENDED]-(p2),
+(p1)-[:PLACED]->(o1),
+(o1)-[:ORDERED_FROM]->(fs1),
+(p1)-[:RATED {stars: 5, comment: 'Great service!'}]->(fs1)
+3. Cypher Queries
+a. Count the number of customers who placed orders on “1/1/2023”
+MATCH (o:Order {date: '2023-01-01'})<-[:PLACED]-(p:Person)
+RETURN COUNT(DISTINCT p) AS customer_count;
+b. List the names of customers whose name starts with S and placed orders using Swiggy
+MATCH (p:Person)-[:PLACED]->(o:Order)-[:ORDERED_FROM]->(fs:FoodService {name: 'Swiggy'})
+WHERE p.name STARTS WITH 'S'
+RETURN p.name AS customer_names;
+
+c. List the names of restaurants with high ratings (>= 4)
+MATCH (p:Person)-[:RATED]->(fs:FoodService)
+WHERE fs.stars >= 4 RETURN DISTINCT fs.name AS high_rated_restaurants;
+d. List the most recommended restaurants in a specified area (replace 'AreaName' with the actual area)
+MATCH (p:Person)-[:RECOMMENDED]->(r:Restaurant {location: 'Chinchwad'}) RETURN r.name AS
+recommended_restaurants;
+
+######################################################################################################################################
+############################################################## Slip 17 ###############################################################
+######################################################################################################################################
+
+Model the following Books and Publisher information as a graph model, and answer the following queries using
+Cypher.
+Author wrote various types of books which is published by publishers. A reader reads a books according to his linking
+and can recommend/provide review for it.
+1. Identify the labels and relationships, along with their properties, and draw a high-level Graph model. [3]
+2. Create nodes and relationships, along with their properties, and visualize your actual Graph model.[3]
+3. Answer the Queries
+a. List the names of authors who wrote “Comics”. [3]
+b. Count no. of readers of _____book published by “Sage”. [3]
+c. List all the publisher whose name starts with “N” [4]
+d. List the names of people who have given a rating of (>=3) for ______ book [4]
+
+1. Graph Model
+Labels and Relationships
+- Nodes (Labels):
+Author: Represents authors of books.
+- Properties: `name`, `author_id`
+Book: Represents books written by authors.
+- Properties: `title`, `book_id`, `genre`
+Publisher: Represents publishers of books.
+- Properties: `name`, `publisher_id`
+Reader: Represents readers who read books.
+- Properties: `name`, `reader_id`
+Review: Represents reviews given by readers for books.
+- Properties: `rating`, `comment`
+- Relationships:
+WROTE: (Author) -[WROTE]-> (Book)
+PUBLISHED_BY: (Book) -[PUBLISHED_BY]-> (Publisher)
+READS: (Reader) -[READS]-> (Book)
+GAVE_REVIEW: (Reader) -[GAVE_REVIEW]-> (Review)
+FOR: (Review) -[FOR]-> (Book)
+
+2. Nodes and Relationships Creation
+CREATE
+(a1:Author {name: 'John Doe', author_id: 'A001'}),
+(a2:Author {name: 'Jane Smith', author_id: 'A002'}),
+(b1:Book {title: 'Amazing Comics', book_id: 'B001', genre: 'Comics'}),
+(b2:Book {title: 'Mystery Novels', book_id: 'B002', genre: 'Mystery'}),
+(p1:Publisher {name: 'Sage', publisher_id: 'P001'}),
+(p2:Publisher {name: 'NextGen', publisher_id: 'P002'}),
+(r1:Reader {name: 'Alice', reader_id: 'R001'}),
+(r2:Reader {name: 'Bob', reader_id: 'R002'}),
+(a1)-[:WROTE]->(b1),
+(a2)-[:WROTE]->(b2),
+
+(b1)-[:PUBLISHED_BY]->(p1),
+(b2)-[:PUBLISHED_BY]->(p2),
+(r1)-[:READS]->(b1),
+(r2)-[:READS]->(b1),
+(r1)-[:GAVE_REVIEW]->(review1:Review {rating: 4, comment: 'Great read!'}),
+(r2)-[:GAVE_REVIEW]->(review2:Review {rating: 3, comment: 'Interesting.'}),
+(review1)-[:FOR]->(b1),
+(review2)-[:FOR]->(b1)
+3. Cypher Queries
+a. List the names of authors who wrote “Comics”
+MATCH (a:Author)-[:WROTE]->(b:Book {genre: 'Comics'}) RETURN a.name AS authors_who_wrote_comics;
+b. Count the number of readers of a specific book published by “Sage” (replace 'Amazing Comics' with your book title)
+MATCH (b:Book {title: 'Amazing Comics'})<-[:READS]-(r:Reader)-[:PUBLISHED_BY]->(p:Publisher {name:
+'Sage'}) RETURN COUNT(r) AS number_of_readers;
+c. List all the publishers whose name starts with “N”
+MATCH (p:Publisher)
+WHERE p.name STARTS WITH 'N'
+RETURN p.name AS publishers_starting_with_N;
+d. List the names of people who have given a rating of (>=3) for a specific book (replace 'Amazing Comics' with your
+book title)
+MATCH (r:Reader)-[:GAVE_REVIEW]->(review:Review)-[:FOR]->(b:Book {title: 'Amazing Comics'})
+WHERE review.rating >= 3
+RETURN r.name AS readers_with_high_rating;
+
+######################################################################################################################################
+############################################################## Slip 18 ###############################################################
+######################################################################################################################################
+
+Create a web page, place an image in center and apply 2d transformation on
+it. (rotation, scaling, translation)
+Here’s an example of a simple web page that centers an image and applies 2D transformations such as rotation, scaling,
+and translation using CSS. You can copy this code into an HTML file and open it in a browser to see the effects.
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2D Transformations on Image</title>
+<style>
+body {
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+margin: 0;
+background-color: f4f4f4;
+}
+.image-container {
+width: 200px; / Set container width /
+height: 200px; / Set container height /
+overflow: hidden; / Hide overflow /
+position: relative; / For absolute positioning /
+}
+img {
+width: 100%; / Responsive width /
+height: auto; / Maintain aspect ratio /
+position: absolute; / Position for transformations /
+animation: transformAnimation 5s infinite; / Animation /
+}
+@keyframes transformAnimation {
+0% {
+transform: translate(0, 0) rotate(0deg) scale(1);
+}
+25% {
+transform: translate(20px, 20px) rotate(45deg) scale(1.2);
+}
+50% {
+transform: translate(40px, 0) rotate(90deg) scale(1.5);
+}
+75% {
+transform: translate(20px, -20px) rotate(135deg) scale(1.2);
+}
+100% {
+transform: translate(0, 0) rotate(180deg) scale(1);
+}
+
+}
+</style>
+</head>
+<body>
+<div class="image-container">
+<img src="https://via.placeholder.com/200" alt="Placeholder Image">
+</div>
+</body>
+</html>
+```
+Explanation:
+- HTML Structure :
+- A `div` element (`image-container`) is used to contain the image, allowing it to be centered on the page.
+- An `img` tag is used to display a placeholder image.
+- CSS Styles :
+- Flexbox : The `body` uses Flexbox to center the `image-container` both vertically and horizontally.
+- Image Container : A fixed width and height are set to ensure the image stays within the bounds.
+- Transformations : The `@keyframes` rule defines an animation that applies various transformations:
+- Translation : Moves the image along the x and y axes.
+- Rotation : Rotates the image in degrees.
+- Scaling : Changes the size of the image.
+- The animation lasts 5 seconds and repeats infinitely.
+
+Model the following Doctor’s information system as a graph model, and answer the following queries using Cypher.
+Consider the doctors in and around Pune. Each Doctor is specialized insome stream like Pediatric, Gynaec, Heart
+Specialist, Cancer Specialist, ENT, etc. A doctor may be a visiting doctor across many hospitals or he may own a
+clinic. A person can provide a review/can recommend adoctor.
+1. Identify the labels and relationships, along with their properties, and draw a high-level Graph model. [3]
+2. Create nodes and relationships, along with their properties, and visualize your actual Graph model. [3]
+3. Answer the Queries
+a. List the Orthopedic doctors in ....... Area. [3]
+b. List the doctors who has specialization in ____ [3]
+c. List the most recommended Pediatrics in Seren Medows. [4]
+d. List all the who visits more than 2 hospitals [4]
+To model the Doctor’s information system as a graph in Neo4j, we can define the necessary elements, create sample
+nodes and relationships, and then provide Cypher queries for specific queries.
+1. Graph Model
+Labels and Relationships
+Nodes (Labels) :
+Doctor : Represents doctors.
+- Properties: `name`, `doctor_id`, `specialization`, `clinic_name`
+Hospital : Represents hospitals.
+- Properties: `name`, `hospital_id`, `location`
+Person : Represents patients or people who can review doctors.
+- Properties: `name`, `person_id`
+
+Review : Represents reviews given by persons for doctors.
+- Properties: `rating`, `comment`
+Relationships :
+SPECIALIZES_IN : (Doctor) -[SPECIALIZES_IN]-> (Specialization)
+VISITS : (Doctor) -[VISITS]-> (Hospital)
+RECOMMENDS : (Person) -[RECOMMENDS]-> (Doctor)
+GAVE_REVIEW : (Person) -[GAVE_REVIEW]-> (Review)
+FOR: (Review) -[FOR]-> (Doctor)
+2. Nodes and Relationships Creation
+Sample Nodes Creation
+CREATE
+(d1:Doctor {name: 'Dr. Smith', doctor_id: 'D001', specialization: 'Orthopedic'}), (d2:Doctor {name: 'Dr. John',
+doctor_id: 'D002', specialization: 'Pediatrics'}), (d3:Doctor {name: 'Dr. Emily', doctor_id: 'D003', specialization:
+'Gynecologist'}), (d4:Doctor {name: 'Dr. Alice', doctor_id: 'D004', specialization: 'Heart Specialist'}),
+(h1:Hospital {name: 'City Hospital', hospital_id: 'H001', location: 'Pune'}), (h2:Hospital {name: 'Seren Medows',
+hospital_id: 'H002', location: 'Pune'}), (h3:Hospital {name: 'Care Clinic', hospital_id: 'H003', location: 'Pune'}),
+(p1:Person {name: 'Alice', person_id: 'P001'}),
+(p2:Person {name: 'Bob', person_id: 'P002'}),
+(d1)-[:VISITS]->(h1),
+(d1)-[:VISITS]->(h2),
+(d2)-[:VISITS]->(h2),
+(d2)-[:VISITS]->(h3),
+(d3)-[:VISITS]->(h1),
+(p1)-[:RECOMMENDS]->(d2),
+(p1)-[:GAVE_REVIEW]->(review1:Review {rating: 4, comment: 'Excellent doctor!'}), (p2)-[:GAVE_REVIEW]-
+>(review2:Review {rating: 5, comment: 'Very caring.'}), (review1)-[:FOR]->(d2),
+(review2)-[:FOR]->(d1)
+3. Cypher Queries
+a. List the Orthopedic doctors in a specified area (replace 'AreaName' with the actual area)
+MATCH (d:Doctor {specialization: 'Orthopedic'})-[:VISITS]->(h:Hospital {location: 'Pune'})
+RETURN d.name AS orthopedic_doctors;
+b. List the doctors who have specialization in a specified field (replace 'SpecializationType' with the actual type)
+MATCH (d:Doctor {specialization: 'Heart Specialist'})
+RETURN d.name AS doctors_with_specialization;
+c. List the most recommended Pediatricians in Seren Medows
+MATCH (d:Doctor {specialization: 'Pediatrics'})-[:VISITS]->(h:Hospital {name: 'Seren Medows'})
+RETURN d.name AS recommended_pediatricians ORDER BY d.name
+d. List all doctors who visit more than 2 hospitals
+MATCH (d:Doctor)-[:VISITS]->(h:Hospital) WITH d, COUNT(h) AS hospital_count WHERE hospital_count >=2
+RETURN d.name AS doctors_visiting_multiple_hospitals;
+
+######################################################################################################################################
+############################################################## Slip 19 ###############################################################
+######################################################################################################################################
+
+Create a web page in which show a button with a text “start download” , 
+when click in start download a progress bar must be initialized with value 0 
+then increase by 10 in each second, change the color of progress bar after 
+every three seconds.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Progress Bar</title>
+    <style>
+        body{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+            background-color:#f4f4f4;
+            flex-direction:column;
+        }
+        button{
+            padding:10px 20px;
+            font-size:16px;
+            cursor:pointer;
+            margin-bottom:20px
+        }
+        progressContainer{
+            width:100%;
+            background-color:#e0e0e0;
+            border-radius:5px;
+            overflow:hidden;
+        }
+        progressBar{
+            width:0;
+            height:30px;
+            background-color:#76c7c0;
+            transition:width 0.5s;
+        }
+    </style>
+<body>
+<button id="startButton">Start Download</button>
+<div id="progressContainer">
+<div id="progressBar"></div>
+</div>
+<script>
+let interval;
+let colorIndex = 0;
+const colors = [' 76c7c0', ' ff9f40', ' ff5c5c', ' 4caf50', ' 2196f3'];
+startButton.addEventListener('click', () => {
+startButton.disabled = true; // Disable button
+progressValue = 0;
+progressBar.style.width = '0%';
+interval = setInterval(() => {
+if (progressValue < 100) {
+progressValue += 10;
+progressBar.style.width = progressValue + '%';
+} else {
+clearInterval(interval); // Clear interval when done
+}
+}, 1000);
+// Change color every 3 seconds
+setInterval(() => {
+if (progressValue < 100) {
+colorIndex = (colorIndex + 1) % colors.length;
+progressBar.style.backgroundColor = colors[colorIndex];
+}
+}, 3000);
+});
+</script>
+</body>
+</html>
+Explanation:
+- HTML Structure :
+- A button labeled "Start Download."
+- A `div` for the progress bar, which contains another `div` that visually represents the progress.
+- CSS Styles :
+- Basic styles for the body, button, and progress bar. The progress bar is styled to have a smooth transition effect.
+- JavaScript Logic :
+- Button Click Event : When the button is clicked, it gets disabled to prevent multiple clicks.
+- Progress Bar Update : A set interval updates the width of the progress bar every second, increasing it by 10%
+until it reaches 100%.
+- Color Change : Another set interval changes the color of the progress bar every three seconds, cycling through
+an array of colors.
+Model the following Laptop manufacturing information system as a graph model, and answer the following queries
+using Cypher.
+Consider an Laptop manufacturing industries which produces different types of laptops. A customer can buy a laptop,
+recommend or rate a the product.
+1. Identify the labels and relationships, along with their properties, and draw a high-level Graph model. [3]
+2. Create nodes and relationships, along with their properties, and visualize your actual Graph model.[3]
+3. Answer the Queries
+a. List the characteristics of........ laptop. [3]
+b. List the name of customers who bought a “DELL” company laptop [3]
+c. List the customers who purchase a device on “26/01/2023” [4]
+
+d. List the most recommended device.[4]
+To model a Laptop Manufacturing Information System as a graph database, we can define labels for the primary
+entities and the relationships that connect them. Below is a detailed breakdown of the model, including queries to
+interact with the database using Cypher.
+1. Identify Labels and Relationships
+Labels
+- Laptop
+- Properties: `laptop_id`, `brand`, `model`, `type`, `specifications`, `price`, `rating`
+- Customer
+- Properties: `customer_id`, `name`, `email`, `purchase_date`
+- Recommendation
+- Properties: `recommendation_id`, `rating`, `comment`
+Relationships
+- BOUGHT
+- From: Customer
+- To: Laptop
+- Properties: `purchase_date`
+- RECOMMENDS
+- From: Customer
+- To: Laptop
+- Properties: `rating`, `comment`
+High-Level Graph Model
+```
+(Customer)-[:BOUGHT {purchase_date: "YYYY-MM-DD"}]->(Laptop)
+(Customer)-[:RECOMMENDS {rating: 1-5, comment: "..." }]->(Laptop)
+```
+2. Create Nodes and Relationships
+Creating Laptop nodes
+CREATE (l1:Laptop {laptop_id: 1, brand: "DELL", model: "Inspiron 15", type: "Notebook", specifications: "Intel i5,
+8GB RAM", price: 50000, rating: 4.5}), (l2:Laptop {laptop_id: 2, brand: "HP", model: "Pavilion", type: "Notebook",
+specifications: "Intel i7, 16GB RAM", price: 70000, rating: 4.7}), (l3:Laptop {laptop_id: 3, brand: "Apple", model:
+"MacBook Pro", type: "Ultrabook", specifications: "M1 Chip, 8GB RAM", price: 120000, rating: 4.9}), (l4:Laptop
+{laptop_id: 4, brand: "ASUS", model: "ZenBook", type: "Ultrabook", specifications: "Intel i7, 16GB RAM", price:
+90000, rating: 4.6}), (l5:Laptop {laptop_id: 5, brand: "LENOVO", model: "ThinkPad", type: "Business",
+specifications: "Intel i5, 8GB RAM", price: 60000, rating: 4.4});
+// Creating Customer nodes
+CREATE (c1:Customer {customer_id: 1, name: "Alice", email: "alice@example.com", purchase_date: "2023-01-
+26"}), (c2:Customer {customer_id: 2, name: "Bob", email: "bob@example.com", purchase_date: "2023-01-20"}),
+(c3:Customer {customer_id: 3, name: "Charlie", email: "charlie@example.com", purchase_date: "2023-01-26"}),
+(c4:Customer {customer_id: 4, name: "Diana", email: "diana@example.com", purchase_date: "2023-01-22"});
+// Creating Relationships
+CREATE (c1)-[:BOUGHT {purchase_date: "2023-01-26"}]->(l1), (c2)-[:BOUGHT {purchase_date: "2023-01-20"}]-
+>(l2), (c3)-[:BOUGHT {purchase_date: "2023-01-26"}]->(l1), (c4)-[:BOUGHT {purchase_date: "2023-01-22"}]-
+
+>(l3), (c1)-[:RECOMMENDS {rating: 5, comment: "Great performance!"}]->(l1), (c2)-[:RECOMMENDS {rating: 4,
+comment: "Good value for money."}]->(l2), (c3)-[:RECOMMENDS {rating: 5, comment: "Excellent laptop!"}]->(l1);
+OR ALL In ONE
+CREATE
+(l1:Laptop {laptop_id: 1, brand: "DELL", model: "Inspiron 15", type: "Notebook", specifications: "Intel i5, 8GB
+RAM", price: 50000, rating: 4.5}),
+(l2:Laptop {laptop_id: 2, brand: "HP", model: "Pavilion", type: "Notebook", specifications: "Intel i7, 16GB RAM",
+price: 70000, rating: 4.7}),
+(l3:Laptop {laptop_id: 3, brand: "Apple", model: "MacBook Pro", type: "Ultrabook", specifications: "M1 Chip, 8GB
+RAM", price: 120000, rating: 4.9}),
+(l4:Laptop {laptop_id: 4, brand: "ASUS", model: "ZenBook", type: "Ultrabook", specifications: "Intel i7, 16GB
+RAM", price: 90000, rating: 4.6}),
+(l5:Laptop {laptop_id: 5, brand: "LENOVO", model: "ThinkPad", type: "Business", specifications: "Intel i5, 8GB
+RAM", price: 60000, rating: 4.4}),
+(c1:Customer {customer_id: 1, name: "Alice", email: "alice@example.com", purchase_date: "2023-01-26"}),
+(c2:Customer {customer_id: 2, name: "Bob", email: "bob@example.com", purchase_date: "2023-01-20"}),
+(c3:Customer {customer_id: 3, name: "Charlie", email: "charlie@example.com", purchase_date: "2023-01-26"}),
+(c4:Customer {customer_id: 4, name: "Diana", email: "diana@example.com", purchase_date: "2023-01-22"}),
+(c1)-[:BOUGHT {purchase_date: "2023-01-26"}]->(l1),
+(c2)-[:BOUGHT {purchase_date: "2023-01-20"}]->(l2),
+(c3)-[:BOUGHT {purchase_date: "2023-01-26"}]->(l1),
+(c4)-[:BOUGHT {purchase_date: "2023-01-22"}]->(l3),
+(c1)-[:RECOMMENDS {rating: 5, comment: "Great performance!"}]->(l1),
+(c2)-[:RECOMMENDS {rating: 4, comment: "Good value for money."}]->(l2),
+(c3)-[:RECOMMENDS {rating: 5, comment: "Excellent laptop!"}]->(l1);
+
+3. Answer the Queries
+a. List the characteristics of a specific laptop
+For example, to list the characteristics of the "Inspiron 15" laptop:
+MATCH (l:Laptop {model: "Inspiron 15"}) RETURN l.brand, l.model, l.type, l.specifications, l.price, l.rating
+b. List the names of customers who bought a “DELL” company laptop
+MATCH (c:Customer)-[:BOUGHT]->(l:Laptop {brand: "DELL"}) RETURN c.name
+c. List the customers who purchased a device on “26/01/2023”
+MATCH (c:Customer) WHERE c.purchase_date = "2023-01-26" RETURN c.name
+d. List the most recommended device
+MATCH (c:Customer)-[r:RECOMMENDS]->(l:Laptop) RETURN l.model, COUNT(r) AS recommendations ORDER
+BY recommendations DESC LIMIT 1
+
+######################################################################################################################################
+############################################################## Slip 20 ###############################################################
+######################################################################################################################################
+
+Model the following nursery management information as a graph model, and answer the following queries using
+Cypher.
+Nursery content various types of plants, fertilizers and required products. Customer visit the nursery or use an app ,
+purchase the plants and necessary products also rate and recommend the app
+1. Identify the labels and relationships, along with their properties, and draw a high-level Graph model. [3]
+2. Create nodes and relationships, along with their properties, and visualize your actual Graph model. [3]
+3. Answer the following queries using Cypher:
+a. List the types of plants from your graph model [3]
+
+b. List the popular flowering plants. [3]
+c. List the names of plants sold plant where qty>500 in last 2 days [4]
+d. List the names of suppliers in decreasing order who supplies “Creepers”. [4]
+
+To model a Nursery Management Information System as a graph database, we can identify the key entities and their
+relationships. Below is a detailed breakdown of the model, including queries to interact with the database using
+Cypher.
+1. Identify Labels and Relationships
+Labels
+- Plant
+- Properties: `plant_id`, `name`, `type`, `category`, `price`, `quantity`, `rating`
+- Fertilizer
+- Properties: `fertilizer_id`, `name`, `type`, `price`
+- Customer
+- Properties: `customer_id`, `name`, `email`
+- Supplier
+- Properties: `supplier_id`, `name`, `contact_info`
+Relationships
+- SOLD
+- From: Plant
+- To: Customer
+- Properties: `purchase_date`, `quantity`
+- SUPPLIES
+- From: Supplier
+- To: Plant
+- Properties: `supply_date`
+- RATES
+- From: Customer
+- To: App (or the Nursery)
+- Properties: `rating`, `comment`
+High-Level Graph Model
+2. Create Nodes and Relationships
+Sample Data Creation
+
+// Creating Plant nodes
+CREATE
+(p1:Plant {plant_id: 1, name: "Rose", type: "Flower", category: "Flowering", price: 100, quantity: 600, rating: 4.5}),
+(p2:Plant {plant_id: 2, name: "Tulip", type: "Flower", category: "Flowering", price: 120, quantity: 300, rating: 4.7}),
+(p3:Plant {plant_id: 3, name: "Bamboo", type: "Grass", category: "Non-Flowering", price: 200, quantity: 1000, rating:
+4.8}),
+(p4:Plant {plant_id: 4, name: "Creeper", type: "Creeper", category: "Non-Flowering", price: 80, quantity: 700, rating:
+4.3}),
+
+(p5:Plant {plant_id: 5, name: "Cactus", type: "Succulent", category: "Non-Flowering", price: 50, quantity: 800, rating:
+4.0});
+// Creating Fertilizer nodes
+CREATE
+(f1:Fertilizer {fertilizer_id: 1, name: "Organic Fertilizer", type: "Organic", price: 150}),
+(f2:Fertilizer {fertilizer_id: 2, name: "Chemical Fertilizer", type: "Chemical", price: 100});
+// Creating Customer nodes
+CREATE
+(c1:Customer {customer_id: 1, name: "Alice", email: "alice@example.com"}),
+(c2:Customer {customer_id: 2, name: "Bob", email: "bob@example.com"}),
+(c3:Customer {customer_id: 3, name: "Charlie", email: "charlie@example.com"});
+// Creating Supplier nodes
+CREATE
+(s1:Supplier {supplier_id: 1, name: "Greenhouse Supplies", contact_info: "greenhouse@example.com"}),
+(s2:Supplier {supplier_id: 2, name: "Flora Supplies", contact_info: "flora@example.com"});
+// Creating Relationships
+CREATE
+(c1)-[:SOLD {purchase_date: "2023-10-27", quantity: 5}]->(p1),
+(c2)-[:SOLD {purchase_date: "2023-10-28", quantity: 10}]->(p2),
+(c3)-[:SOLD {purchase_date: "2023-10-26", quantity: 15}]->(p4),
+(s1)-[:SUPPLIES {supply_date: "2023-10-20"}]->(p4),
+(s2)-[:SUPPLIES {supply_date: "2023-10-21"}]->(p1),
+(c1)-[:RATES {rating: 5, comment: "Great service!"}]->(s1),
+(c2)-[:RATES {rating: 4, comment: "Loved the variety."}]->(s2);
+3. Answer the Queries
+a. List the types of plants from your graph model
+MATCH (p:Plant) RETURN DISTINCT p.type
+b. List the popular flowering plants
+Assuming "popular" means those with a rating greater than 4.5:
+MATCH (p:Plant {category: "Flowering"}) WHERE p.rating > 4.5 RETURN p.name, p.rating
+c. List the names of plants sold where quantity > 500 in the last 2 days
+MATCH (c:Customer)-[s:SOLD]->(p:Plant) WHERE s.purchase_date >= "2023-10-26" AND p.quantity > 500
+RETURN p.name
+d. List the names of suppliers in decreasing order who supply “Creepers”
+MATCH (s:Supplier)-[:SUPPLIES]->(p:Plant {name: "Creeper"}) RETURN s.name ORDER BY s.name DESC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Slip-16 :
+Model the following food service industry information as a graph model, and answer the following queries using
+Cypher.
+Consider food service industries like ZOMATO, Swiggy around us. Popular restaurants are connected to these
+industries to increase sell. A person order food through this industry and get offers. A person give rate(1-5 stars) to
+company its facility/facilities. and can recommend this to his/her friends.
+1. Identify the labels and relationships, along with their properties, and draw a high-level Graph model. [3]
+2. Create nodes and relationships, along with their properties, and visualize your actual Graph model. [3]
+3. Answer the Queries.
+a. Count no. of customers who place order on “1/1/2023” [3]
+b. List the names of customers whose name starts with S and place order using Swiggy [3]
+c. List the names of hotels with high rating (>=4). [4]
+d. List the most recommended hotels in....... area. [4]
+To model the food service industry in Neo4j and answer your queries, let’s outline the labels, relationships, properties,
+and then provide the Cypher queries.
+1. Graph Model
+Labels and Relationships
+Nodes (Labels):
+Person: Represents customers.
+- Properties: `name`, `customer_id`
+- Restaurant: Represents popular restaurants.
+- Properties: `name`, `restaurant_id`, `location`
+- FoodService: Represents services like Zomato or Swiggy.
+- Properties: `name`, `service_id`
+- Order: Represents orders placed by customers.
+- Properties: `order_id`, `date`, `offer`
+- Rating: Represents ratings given by customers to food services.
+- Properties: `stars`, `comment`
+- Relationships:
+- PLACED: (Person) -[PLACED]-> (Order)
+- ORDERED_FROM: (Order) -[ORDERED_FROM]-> (FoodService)
+- RECOMMENDED: (Person) -[RECOMMENDED]-> (Restaurant)
+- RATED: (Person) -[RATED]-> (FoodService)
+2. Nodes and Relationships
+Sample Nodes Creation
+Person
+CREATE
+(p1:Person {name: 'Sam', customer_id: 'C001'}),
+(p2:Person {name: 'Sonia', customer_id: 'C002'}),
+(p3:Person {name: 'Alex', customer_id: 'C003'}),
+(p4:Person {name: 'Martin', customer_id: 'C004'}),
+(p5:Person {name: 'Jimmy', customer_id: 'C005'}),
+(p6:Person {name: 'Dinel', customer_id: 'C006'})
+
+Restaurant
+Create
+(r1:Restaurant {name: 'Pizza Place', restaurant_id: 'R001', location: 'Chinchwad'}),
+(r2:Restaurant {name: 'Burger House', restaurant_id: 'R002', location: 'Nigdi'}),
+(r3:Restaurant {name: 'My Cafe', restaurant_id: 'R003', location: 'Nigdi'}),
+(r4:Restaurant {name: 'Delta', restaurant_id: 'R004', location: 'Pimpri'})
+FOOD Services
+Create (fs1:FoodService {name: 'Swiggy', service_id: 'FS001'}), (fs2:FoodService {name: 'Zomato', service_id:
+'FS002'}), (fs3:FoodService {name: 'Foodpanda', service_id: 'FS003'}), (fs4:FoodService {name: 'Doordash',
+service_id: 'FS004'})
+Order
+Create
+(o1:Order {order_id: 'O001', date: '2023-01-01', offer: '10% OFF'}), (o2:Order {order_id: 'O002', date: '2023-01-01',
+offer: '20% OFF'}), (o3:Order {order_id: 'O003', date: '2023-01-02', offer: '10% OFF'}), (o4:Order {order_id: 'O004',
+date: '2023-01-02', offer: '20 OFF'})
+Relations
+Create (r1)<-[:RECOMMENDED]-(p2),
+(p1)-[:PLACED]->(o1),
+(o1)-[:ORDERED_FROM]->(fs1),
+(p1)-[:RATED {stars: 5, comment: 'Great service!'}]->(fs1)
+Create (‘Pizza Place’)<-[:RECOMMENDED]-(‘Sonia’),
+(p1)-[:PLACED]->(o1),
+(o1)-[:ORDERED_FROM]->(fs1),
+(p1)-[:RATED {stars: 5, comment: 'Great service!'}]->(fs1)
+OR
+CREATE
+(p1:Person {name: 'Sam', customer_id: 'C001'}),
+(p2:Person {name: 'Sonia', customer_id: 'C002'}),
+(p3:Person {name: 'Alex', customer_id: 'C003'}),
+(p4:Person {name: 'Martin', customer_id: 'C004'}),
+(r1:Restaurant {name: 'Pizza Place', restaurant_id: 'R001', location: 'Chinchwad'}), (r2:Restaurant {name: 'Burger
+House', restaurant_id: 'R002', location: 'Nigdi'}), (fs1:FoodService {name: 'Swiggy', service_id: 'FS001'}),
+(fs2:FoodService {name: 'Zomato', service_id: 'FS002'}),
+(o1:Order {order_id: 'O001', date: '2023-01-01', offer: '10% OFF'}),
+(o2:Order {order_id: 'O002', date: '2023-01-01', offer: '20% OFF'}),
+(r1)<-[:RECOMMENDED]-(p2),
+(p1)-[:PLACED]->(o1),
+(o1)-[:ORDERED_FROM]->(fs1),
+(p1)-[:RATED {stars: 5, comment: 'Great service!'}]->(fs1)
+3. Cypher Queries
+a. Count the number of customers who placed orders on “1/1/2023”
+MATCH (o:Order {date: '2023-01-01'})<-[:PLACED]-(p:Person)
+RETURN COUNT(DISTINCT p) AS customer_count;
+b. List the names of customers whose name starts with S and placed orders using Swiggy
+MATCH (p:Person)-[:PLACED]->(o:Order)-[:ORDERED_FROM]->(fs:FoodService {name: 'Swiggy'})
+WHERE p.name STARTS WITH 'S'
+RETURN p.name AS customer_names;
+
+c. List the names of restaurants with high ratings (>= 4)
+MATCH (p:Person)-[:RATED]->(fs:FoodService)
+WHERE fs.stars >= 4 RETURN DISTINCT fs.name AS high_rated_restaurants;
+d. List the most recommended restaurants in a specified area (replace 'AreaName' with the actual area)
+MATCH (p:Person)-[:RECOMMENDED]->(r:Restaurant {location: 'Chinchwad'}) RETURN r.name AS
+recommended_restaurants;
+
+Slip no. 17
+Model the following Books and Publisher information as a graph model, and answer the following queries using
+Cypher.
+Author wrote various types of books which is published by publishers. A reader reads a books according to his linking
+and can recommend/provide review for it.
+1. Identify the labels and relationships, along with their properties, and draw a high-level Graph model. [3]
+2. Create nodes and relationships, along with their properties, and visualize your actual Graph model.[3]
+3. Answer the Queries
+a. List the names of authors who wrote “Comics”. [3]
+b. Count no. of readers of _____book published by “Sage”. [3]
+c. List all the publisher whose name starts with “N” [4]
+d. List the names of people who have given a rating of (>=3) for ______ book [4]
+
+1. Graph Model
+Labels and Relationships
+- Nodes (Labels):
+Author: Represents authors of books.
+- Properties: `name`, `author_id`
+Book: Represents books written by authors.
+- Properties: `title`, `book_id`, `genre`
+Publisher: Represents publishers of books.
+- Properties: `name`, `publisher_id`
+Reader: Represents readers who read books.
+- Properties: `name`, `reader_id`
+Review: Represents reviews given by readers for books.
+- Properties: `rating`, `comment`
+- Relationships:
+WROTE: (Author) -[WROTE]-> (Book)
+PUBLISHED_BY: (Book) -[PUBLISHED_BY]-> (Publisher)
+READS: (Reader) -[READS]-> (Book)
+GAVE_REVIEW: (Reader) -[GAVE_REVIEW]-> (Review)
+FOR: (Review) -[FOR]-> (Book)
+
+2. Nodes and Relationships Creation
+CREATE
+(a1:Author {name: 'John Doe', author_id: 'A001'}),
+(a2:Author {name: 'Jane Smith', author_id: 'A002'}),
+(b1:Book {title: 'Amazing Comics', book_id: 'B001', genre: 'Comics'}),
+(b2:Book {title: 'Mystery Novels', book_id: 'B002', genre: 'Mystery'}),
+(p1:Publisher {name: 'Sage', publisher_id: 'P001'}),
+(p2:Publisher {name: 'NextGen', publisher_id: 'P002'}),
+(r1:Reader {name: 'Alice', reader_id: 'R001'}),
+(r2:Reader {name: 'Bob', reader_id: 'R002'}),
+(a1)-[:WROTE]->(b1),
+(a2)-[:WROTE]->(b2),
+
+(b1)-[:PUBLISHED_BY]->(p1),
+(b2)-[:PUBLISHED_BY]->(p2),
+(r1)-[:READS]->(b1),
+(r2)-[:READS]->(b1),
+(r1)-[:GAVE_REVIEW]->(review1:Review {rating: 4, comment: 'Great read!'}),
+(r2)-[:GAVE_REVIEW]->(review2:Review {rating: 3, comment: 'Interesting.'}),
+(review1)-[:FOR]->(b1),
+(review2)-[:FOR]->(b1)
+3. Cypher Queries
+a. List the names of authors who wrote “Comics”
+MATCH (a:Author)-[:WROTE]->(b:Book {genre: 'Comics'}) RETURN a.name AS authors_who_wrote_comics;
+b. Count the number of readers of a specific book published by “Sage” (replace 'Amazing Comics' with your book title)
+MATCH (b:Book {title: 'Amazing Comics'})<-[:READS]-(r:Reader)-[:PUBLISHED_BY]->(p:Publisher {name:
+'Sage'}) RETURN COUNT(r) AS number_of_readers;
+c. List all the publishers whose name starts with “N”
+MATCH (p:Publisher)
+WHERE p.name STARTS WITH 'N'
+RETURN p.name AS publishers_starting_with_N;
+d. List the names of people who have given a rating of (>=3) for a specific book (replace 'Amazing Comics' with your
+book title)
+MATCH (r:Reader)-[:GAVE_REVIEW]->(review:Review)-[:FOR]->(b:Book {title: 'Amazing Comics'})
+WHERE review.rating >= 3
+RETURN r.name AS readers_with_high_rating;
+
+Slip no. 18
+Create a web page, place an image in center and apply 2d transformation on
+it. (rotation, scaling, translation)
+Here’s an example of a simple web page that centers an image and applies 2D transformations such as rotation, scaling,
+and translation using CSS. You can copy this code into an HTML file and open it in a browser to see the effects.
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2D Transformations on Image</title>
+<style>
+body {
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+margin: 0;
+background-color: f4f4f4;
+}
+.image-container {
+width: 200px; / Set container width /
+height: 200px; / Set container height /
+overflow: hidden; / Hide overflow /
+position: relative; / For absolute positioning /
+}
+img {
+width: 100%; / Responsive width /
+height: auto; / Maintain aspect ratio /
+position: absolute; / Position for transformations /
+animation: transformAnimation 5s infinite; / Animation /
+}
+@keyframes transformAnimation {
+0% {
+transform: translate(0, 0) rotate(0deg) scale(1);
+}
+25% {
+transform: translate(20px, 20px) rotate(45deg) scale(1.2);
+}
+50% {
+transform: translate(40px, 0) rotate(90deg) scale(1.5);
+}
+75% {
+transform: translate(20px, -20px) rotate(135deg) scale(1.2);
+}
+100% {
+transform: translate(0, 0) rotate(180deg) scale(1);
+}
+
+}
+</style>
+</head>
+<body>
+<div class="image-container">
+<img src="https://via.placeholder.com/200" alt="Placeholder Image">
+</div>
+</body>
+</html>
+```
+Explanation:
+- HTML Structure :
+- A `div` element (`image-container`) is used to contain the image, allowing it to be centered on the page.
+- An `img` tag is used to display a placeholder image.
+- CSS Styles :
+- Flexbox : The `body` uses Flexbox to center the `image-container` both vertically and horizontally.
+- Image Container : A fixed width and height are set to ensure the image stays within the bounds.
+- Transformations : The `@keyframes` rule defines an animation that applies various transformations:
+- Translation : Moves the image along the x and y axes.
+- Rotation : Rotates the image in degrees.
+- Scaling : Changes the size of the image.
+- The animation lasts 5 seconds and repeats infinitely.
+
+Model the following Doctor’s information system as a graph model, and answer the following queries using Cypher.
+Consider the doctors in and around Pune. Each Doctor is specialized insome stream like Pediatric, Gynaec, Heart
+Specialist, Cancer Specialist, ENT, etc. A doctor may be a visiting doctor across many hospitals or he may own a
+clinic. A person can provide a review/can recommend adoctor.
+1. Identify the labels and relationships, along with their properties, and draw a high-level Graph model. [3]
+2. Create nodes and relationships, along with their properties, and visualize your actual Graph model. [3]
+3. Answer the Queries
+a. List the Orthopedic doctors in ....... Area. [3]
+b. List the doctors who has specialization in ____ [3]
+c. List the most recommended Pediatrics in Seren Medows. [4]
+d. List all the who visits more than 2 hospitals [4]
+To model the Doctor’s information system as a graph in Neo4j, we can define the necessary elements, create sample
+nodes and relationships, and then provide Cypher queries for specific queries.
+1. Graph Model
+Labels and Relationships
+Nodes (Labels) :
+Doctor : Represents doctors.
+- Properties: `name`, `doctor_id`, `specialization`, `clinic_name`
+Hospital : Represents hospitals.
+- Properties: `name`, `hospital_id`, `location`
+Person : Represents patients or people who can review doctors.
+- Properties: `name`, `person_id`
+
+Review : Represents reviews given by persons for doctors.
+- Properties: `rating`, `comment`
+Relationships :
+SPECIALIZES_IN : (Doctor) -[SPECIALIZES_IN]-> (Specialization)
+VISITS : (Doctor) -[VISITS]-> (Hospital)
+RECOMMENDS : (Person) -[RECOMMENDS]-> (Doctor)
+GAVE_REVIEW : (Person) -[GAVE_REVIEW]-> (Review)
+FOR: (Review) -[FOR]-> (Doctor)
+2. Nodes and Relationships Creation
+Sample Nodes Creation
+CREATE
+(d1:Doctor {name: 'Dr. Smith', doctor_id: 'D001', specialization: 'Orthopedic'}), (d2:Doctor {name: 'Dr. John',
+doctor_id: 'D002', specialization: 'Pediatrics'}), (d3:Doctor {name: 'Dr. Emily', doctor_id: 'D003', specialization:
+'Gynecologist'}), (d4:Doctor {name: 'Dr. Alice', doctor_id: 'D004', specialization: 'Heart Specialist'}),
+(h1:Hospital {name: 'City Hospital', hospital_id: 'H001', location: 'Pune'}), (h2:Hospital {name: 'Seren Medows',
+hospital_id: 'H002', location: 'Pune'}), (h3:Hospital {name: 'Care Clinic', hospital_id: 'H003', location: 'Pune'}),
+(p1:Person {name: 'Alice', person_id: 'P001'}),
+(p2:Person {name: 'Bob', person_id: 'P002'}),
+(d1)-[:VISITS]->(h1),
+(d1)-[:VISITS]->(h2),
+(d2)-[:VISITS]->(h2),
+(d2)-[:VISITS]->(h3),
+(d3)-[:VISITS]->(h1),
+(p1)-[:RECOMMENDS]->(d2),
+(p1)-[:GAVE_REVIEW]->(review1:Review {rating: 4, comment: 'Excellent doctor!'}), (p2)-[:GAVE_REVIEW]-
+>(review2:Review {rating: 5, comment: 'Very caring.'}), (review1)-[:FOR]->(d2),
+(review2)-[:FOR]->(d1)
+3. Cypher Queries
+a. List the Orthopedic doctors in a specified area (replace 'AreaName' with the actual area)
+MATCH (d:Doctor {specialization: 'Orthopedic'})-[:VISITS]->(h:Hospital {location: 'Pune'})
+RETURN d.name AS orthopedic_doctors;
+b. List the doctors who have specialization in a specified field (replace 'SpecializationType' with the actual type)
+MATCH (d:Doctor {specialization: 'Heart Specialist'})
+RETURN d.name AS doctors_with_specialization;
+c. List the most recommended Pediatricians in Seren Medows
+MATCH (d:Doctor {specialization: 'Pediatrics'})-[:VISITS]->(h:Hospital {name: 'Seren Medows'})
+RETURN d.name AS recommended_pediatricians ORDER BY d.name
+d. List all doctors who visit more than 2 hospitals
+MATCH (d:Doctor)-[:VISITS]->(h:Hospital) WITH d, COUNT(h) AS hospital_count WHERE hospital_count >=2
+RETURN d.name AS doctors_visiting_multiple_hospitals;
+
+let interval;
+let colorIndex = 0;
+const colors = [' 76c7c0', ' ff9f40', ' ff5c5c', ' 4caf50', ' 2196f3'];
+startButton.addEventListener('click', () => {
+startButton.disabled = true; // Disable button
+progressValue = 0;
+progressBar.style.width = '0%';
+interval = setInterval(() => {
+if (progressValue < 100) {
+progressValue += 10;
+progressBar.style.width = progressValue + '%';
+} else {
+clearInterval(interval); // Clear interval when done
+}
+}, 1000);
+// Change color every 3 seconds
+setInterval(() => {
+if (progressValue < 100) {
+colorIndex = (colorIndex + 1) % colors.length;
+progressBar.style.backgroundColor = colors[colorIndex];
+}
+}, 3000);
+});
+</script>
+</body>
+</html>
+Explanation:
+- HTML Structure :
+- A button labeled "Start Download."
+- A `div` for the progress bar, which contains another `div` that visually represents the progress.
+- CSS Styles :
+- Basic styles for the body, button, and progress bar. The progress bar is styled to have a smooth transition effect.
+- JavaScript Logic :
+- Button Click Event : When the button is clicked, it gets disabled to prevent multiple clicks.
+- Progress Bar Update : A set interval updates the width of the progress bar every second, increasing it by 10%
+until it reaches 100%.
+- Color Change : Another set interval changes the color of the progress bar every three seconds, cycling through
+an array of colors.
+Model the following Laptop manufacturing information system as a graph model, and answer the following queries
+using Cypher.
+Consider an Laptop manufacturing industries which produces different types of laptops. A customer can buy a laptop,
+recommend or rate a the product.
+1. Identify the labels and relationships, along with their properties, and draw a high-level Graph model. [3]
+2. Create nodes and relationships, along with their properties, and visualize your actual Graph model.[3]
+3. Answer the Queries
+a. List the characteristics of........ laptop. [3]
+b. List the name of customers who bought a “DELL” company laptop [3]
+c. List the customers who purchase a device on “26/01/2023” [4]
+
+d. List the most recommended device.[4]
+To model a Laptop Manufacturing Information System as a graph database, we can define labels for the primary
+entities and the relationships that connect them. Below is a detailed breakdown of the model, including queries to
+interact with the database using Cypher.
+1. Identify Labels and Relationships
+Labels
+- Laptop
+- Properties: `laptop_id`, `brand`, `model`, `type`, `specifications`, `price`, `rating`
+- Customer
+- Properties: `customer_id`, `name`, `email`, `purchase_date`
+- Recommendation
+- Properties: `recommendation_id`, `rating`, `comment`
+Relationships
+- BOUGHT
+- From: Customer
+- To: Laptop
+- Properties: `purchase_date`
+- RECOMMENDS
+- From: Customer
+- To: Laptop
+- Properties: `rating`, `comment`
+High-Level Graph Model
+```
+(Customer)-[:BOUGHT {purchase_date: "YYYY-MM-DD"}]->(Laptop)
+(Customer)-[:RECOMMENDS {rating: 1-5, comment: "..." }]->(Laptop)
+```
+2. Create Nodes and Relationships
+Creating Laptop nodes
+CREATE (l1:Laptop {laptop_id: 1, brand: "DELL", model: "Inspiron 15", type: "Notebook", specifications: "Intel i5,
+8GB RAM", price: 50000, rating: 4.5}), (l2:Laptop {laptop_id: 2, brand: "HP", model: "Pavilion", type: "Notebook",
+specifications: "Intel i7, 16GB RAM", price: 70000, rating: 4.7}), (l3:Laptop {laptop_id: 3, brand: "Apple", model:
+"MacBook Pro", type: "Ultrabook", specifications: "M1 Chip, 8GB RAM", price: 120000, rating: 4.9}), (l4:Laptop
+{laptop_id: 4, brand: "ASUS", model: "ZenBook", type: "Ultrabook", specifications: "Intel i7, 16GB RAM", price:
+90000, rating: 4.6}), (l5:Laptop {laptop_id: 5, brand: "LENOVO", model: "ThinkPad", type: "Business",
+specifications: "Intel i5, 8GB RAM", price: 60000, rating: 4.4});
+// Creating Customer nodes
+CREATE (c1:Customer {customer_id: 1, name: "Alice", email: "alice@example.com", purchase_date: "2023-01-
+26"}), (c2:Customer {customer_id: 2, name: "Bob", email: "bob@example.com", purchase_date: "2023-01-20"}),
+(c3:Customer {customer_id: 3, name: "Charlie", email: "charlie@example.com", purchase_date: "2023-01-26"}),
+(c4:Customer {customer_id: 4, name: "Diana", email: "diana@example.com", purchase_date: "2023-01-22"});
+// Creating Relationships
+CREATE (c1)-[:BOUGHT {purchase_date: "2023-01-26"}]->(l1), (c2)-[:BOUGHT {purchase_date: "2023-01-20"}]-
+>(l2), (c3)-[:BOUGHT {purchase_date: "2023-01-26"}]->(l1), (c4)-[:BOUGHT {purchase_date: "2023-01-22"}]-
+
+>(l3), (c1)-[:RECOMMENDS {rating: 5, comment: "Great performance!"}]->(l1), (c2)-[:RECOMMENDS {rating: 4,
+comment: "Good value for money."}]->(l2), (c3)-[:RECOMMENDS {rating: 5, comment: "Excellent laptop!"}]->(l1);
+OR ALL In ONE
+CREATE
+(l1:Laptop {laptop_id: 1, brand: "DELL", model: "Inspiron 15", type: "Notebook", specifications: "Intel i5, 8GB
+RAM", price: 50000, rating: 4.5}),
+(l2:Laptop {laptop_id: 2, brand: "HP", model: "Pavilion", type: "Notebook", specifications: "Intel i7, 16GB RAM",
+price: 70000, rating: 4.7}),
+(l3:Laptop {laptop_id: 3, brand: "Apple", model: "MacBook Pro", type: "Ultrabook", specifications: "M1 Chip, 8GB
+RAM", price: 120000, rating: 4.9}),
+(l4:Laptop {laptop_id: 4, brand: "ASUS", model: "ZenBook", type: "Ultrabook", specifications: "Intel i7, 16GB
+RAM", price: 90000, rating: 4.6}),
+(l5:Laptop {laptop_id: 5, brand: "LENOVO", model: "ThinkPad", type: "Business", specifications: "Intel i5, 8GB
+RAM", price: 60000, rating: 4.4}),
+(c1:Customer {customer_id: 1, name: "Alice", email: "alice@example.com", purchase_date: "2023-01-26"}),
+(c2:Customer {customer_id: 2, name: "Bob", email: "bob@example.com", purchase_date: "2023-01-20"}),
+(c3:Customer {customer_id: 3, name: "Charlie", email: "charlie@example.com", purchase_date: "2023-01-26"}),
+(c4:Customer {customer_id: 4, name: "Diana", email: "diana@example.com", purchase_date: "2023-01-22"}),
+(c1)-[:BOUGHT {purchase_date: "2023-01-26"}]->(l1),
+(c2)-[:BOUGHT {purchase_date: "2023-01-20"}]->(l2),
+(c3)-[:BOUGHT {purchase_date: "2023-01-26"}]->(l1),
+(c4)-[:BOUGHT {purchase_date: "2023-01-22"}]->(l3),
+(c1)-[:RECOMMENDS {rating: 5, comment: "Great performance!"}]->(l1),
+(c2)-[:RECOMMENDS {rating: 4, comment: "Good value for money."}]->(l2),
+(c3)-[:RECOMMENDS {rating: 5, comment: "Excellent laptop!"}]->(l1);
+
+3. Answer the Queries
+a. List the characteristics of a specific laptop
+For example, to list the characteristics of the "Inspiron 15" laptop:
+MATCH (l:Laptop {model: "Inspiron 15"}) RETURN l.brand, l.model, l.type, l.specifications, l.price, l.rating
+b. List the names of customers who bought a “DELL” company laptop
+MATCH (c:Customer)-[:BOUGHT]->(l:Laptop {brand: "DELL"}) RETURN c.name
+c. List the customers who purchased a device on “26/01/2023”
+MATCH (c:Customer) WHERE c.purchase_date = "2023-01-26" RETURN c.name
+d. List the most recommended device
+MATCH (c:Customer)-[r:RECOMMENDS]->(l:Laptop) RETURN l.model, COUNT(r) AS recommendations ORDER
+BY recommendations DESC LIMIT 1
+
+Slip No. 20
+Model the following nursery management information as a graph model, and answer the following queries using
+Cypher.
+Nursery content various types of plants, fertilizers and required products. Customer visit the nursery or use an app ,
+purchase the plants and necessary products also rate and recommend the app
+1. Identify the labels and relationships, along with their properties, and draw a high-level Graph model. [3]
+2. Create nodes and relationships, along with their properties, and visualize your actual Graph model. [3]
+3. Answer the following queries using Cypher:
+a. List the types of plants from your graph model [3]
+
+b. List the popular flowering plants. [3]
+c. List the names of plants sold plant where qty>500 in last 2 days [4]
+d. List the names of suppliers in decreasing order who supplies “Creepers”. [4]
+
+To model a Nursery Management Information System as a graph database, we can identify the key entities and their
+relationships. Below is a detailed breakdown of the model, including queries to interact with the database using
+Cypher.
+1. Identify Labels and Relationships
+Labels
+- Plant
+- Properties: `plant_id`, `name`, `type`, `category`, `price`, `quantity`, `rating`
+- Fertilizer
+- Properties: `fertilizer_id`, `name`, `type`, `price`
+- Customer
+- Properties: `customer_id`, `name`, `email`
+- Supplier
+- Properties: `supplier_id`, `name`, `contact_info`
+Relationships
+- SOLD
+- From: Plant
+- To: Customer
+- Properties: `purchase_date`, `quantity`
+- SUPPLIES
+- From: Supplier
+- To: Plant
+- Properties: `supply_date`
+- RATES
+- From: Customer
+- To: App (or the Nursery)
+- Properties: `rating`, `comment`
+High-Level Graph Model
+2. Create Nodes and Relationships
+Sample Data Creation
+
+// Creating Plant nodes
+CREATE
+(p1:Plant {plant_id: 1, name: "Rose", type: "Flower", category: "Flowering", price: 100, quantity: 600, rating: 4.5}),
+(p2:Plant {plant_id: 2, name: "Tulip", type: "Flower", category: "Flowering", price: 120, quantity: 300, rating: 4.7}),
+(p3:Plant {plant_id: 3, name: "Bamboo", type: "Grass", category: "Non-Flowering", price: 200, quantity: 1000, rating:
+4.8}),
+(p4:Plant {plant_id: 4, name: "Creeper", type: "Creeper", category: "Non-Flowering", price: 80, quantity: 700, rating:
+4.3}),
+
+(p5:Plant {plant_id: 5, name: "Cactus", type: "Succulent", category: "Non-Flowering", price: 50, quantity: 800, rating:
+4.0});
+// Creating Fertilizer nodes
+CREATE
+(f1:Fertilizer {fertilizer_id: 1, name: "Organic Fertilizer", type: "Organic", price: 150}),
+(f2:Fertilizer {fertilizer_id: 2, name: "Chemical Fertilizer", type: "Chemical", price: 100});
+// Creating Customer nodes
+CREATE
+(c1:Customer {customer_id: 1, name: "Alice", email: "alice@example.com"}),
+(c2:Customer {customer_id: 2, name: "Bob", email: "bob@example.com"}),
+(c3:Customer {customer_id: 3, name: "Charlie", email: "charlie@example.com"});
+// Creating Supplier nodes
+CREATE
+(s1:Supplier {supplier_id: 1, name: "Greenhouse Supplies", contact_info: "greenhouse@example.com"}),
+(s2:Supplier {supplier_id: 2, name: "Flora Supplies", contact_info: "flora@example.com"});
+// Creating Relationships
+CREATE
+(c1)-[:SOLD {purchase_date: "2023-10-27", quantity: 5}]->(p1),
+(c2)-[:SOLD {purchase_date: "2023-10-28", quantity: 10}]->(p2),
+(c3)-[:SOLD {purchase_date: "2023-10-26", quantity: 15}]->(p4),
+(s1)-[:SUPPLIES {supply_date: "2023-10-20"}]->(p4),
+(s2)-[:SUPPLIES {supply_date: "2023-10-21"}]->(p1),
+(c1)-[:RATES {rating: 5, comment: "Great service!"}]->(s1),
+(c2)-[:RATES {rating: 4, comment: "Loved the variety."}]->(s2);
+3. Answer the Queries
+a. List the types of plants from your graph model
+MATCH (p:Plant) RETURN DISTINCT p.type
+b. List the popular flowering plants
+Assuming "popular" means those with a rating greater than 4.5:
+MATCH (p:Plant {category: "Flowering"}) WHERE p.rating > 4.5 RETURN p.name, p.rating
+c. List the names of plants sold where quantity > 500 in the last 2 days
+MATCH (c:Customer)-[s:SOLD]->(p:Plant) WHERE s.purchase_date >= "2023-10-26" AND p.quantity > 500
+RETURN p.name
+d. List the names of suppliers in decreasing order who supply “Creepers”
+MATCH (s:Supplier)-[:SUPPLIES]->(p:Plant {name: "Creeper"}) RETURN s.name ORDER BY s.name DESC
